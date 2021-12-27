@@ -47,6 +47,16 @@ VALUES (1, 5000.00, 12345678902);
 INSERT INTO employee(empolyee_role, salary, pesel)
 VALUES (1, 4000.00, 12345678903);
 
+
+INSERT INTO plane_model(brand, model_name, number_of_flight_attendants, number_of_pilots, number_of_seats, tank_capacity)
+VALUES ('Boeing', 737, 10, 2, 230, 25940);
+
+INSERT INTO plane(airlines, inspection_date, model_id)
+VALUES ('QuatarAirlines', '2022-03-01', 2);
+
+INSERT INTO plane(airlines, inspection_date, model_id)
+VALUES ('Ryanair', '2021-12-28', 2);
+
 #
 # INSERT INTO flight(arrival_date, departure_date, price, arrival_place_id, departure_place_id, plane_id)
 # VALUES (date_format())
@@ -60,3 +70,4 @@ DELETE FROM airport WHERE id > 0;
 DELETE FROM address WHERE id > 0;
 DELETE FROM personal_data WHERE pesel = 12345678903;
 DELETE FROM employee WHERE pesel = 12345678903;
+DELETE FROM plane_model WHERE id = 1;

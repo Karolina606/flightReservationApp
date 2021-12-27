@@ -14,7 +14,8 @@ public class Employee {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
+    @JoinColumn(name = "pesel", referencedColumnName = "pesel",nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PersonalData personalData;
 
@@ -25,6 +26,7 @@ public class Employee {
     private BigDecimal salary;
 
     @ManyToMany(mappedBy = "crew", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Flight> flights;
 
     public Employee(PersonalData pesel, EmployeeEnum empolyeeRole, BigDecimal salary) {

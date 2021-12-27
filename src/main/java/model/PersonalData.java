@@ -29,15 +29,16 @@ public class PersonalData{
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Address address;
 
-    @OneToOne
+    @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "pesel", referencedColumnName = "pesel",nullable = false)
     private Employee employee;
 
     @OneToMany(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Reservation> reservations;
 
     @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     public PersonalData(Long pesel, String firstName, String lastName, Date dateOfBirth, Long phoneNumber, Address address) {

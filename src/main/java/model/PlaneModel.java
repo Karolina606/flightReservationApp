@@ -1,5 +1,8 @@
 package model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class PlaneModel {
     private float tankCapacity;
 
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Plane> planes;
 
     public PlaneModel(String brand, String modelName, int numberOfSeats, int numberOfPilots, int numberOfFlightAttendants, float tankCapacity) {
