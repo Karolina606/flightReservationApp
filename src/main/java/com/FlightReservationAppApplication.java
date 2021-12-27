@@ -1,5 +1,8 @@
-package model;
+package com;
 
+
+import com.model.*;
+import com.view.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

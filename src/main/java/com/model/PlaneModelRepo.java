@@ -1,8 +1,8 @@
-package model;
+package com.model;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AirportRepo extends CrudRepository<Airport, Long> {
+public interface PlaneModelRepo extends CrudRepository<PlaneModel, Long> {
 }

@@ -1,6 +1,4 @@
-package model;
-
-import org.hibernate.annotations.OnDelete;
+package com.model;
 
 import javax.persistence.*;
 import java.util.Date;

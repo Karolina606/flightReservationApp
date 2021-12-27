@@ -18,23 +18,23 @@ VALUES(NULL, 36, 'Barcelona', 'Hiszpania', '08002', 'Carrer dEstuc');
 
 
 INSERT INTO airport(name, address_id)
-VALUES ('Port lotniczy Wrocław', 23);
+VALUES ('Port lotniczy Wrocław', 4);
 
 INSERT INTO airport(name, address_id)
-VALUES ('Bergamo airport', 24);
+VALUES ('Bergamo airport', 5);
 
 INSERT INTO airport(name, address_id)
-VALUES ('Locker Barcelona', 25);
+VALUES ('Locker Barcelona', 6);
 
 
 INSERT INTO personal_data(pesel, date_of_birth, first_name, last_name, phone_number, address_id)
-VALUES (12345678901, '1970-12-12', 'Andrzej', 'Kowalski', 123456789, 20);
+VALUES (12345678901, '1970-12-12', 'Andrzej', 'Kowalski', 123456789, 1);
 
 INSERT INTO personal_data(pesel, date_of_birth, first_name, last_name, phone_number, address_id)
-VALUES (12345678902, '1985-04-01', 'Sasha', 'Ivanova', 123456798, 21);
+VALUES (12345678902, '1985-04-01', 'Sasha', 'Ivanova', 123456798, 2);
 
 INSERT INTO personal_data(pesel, date_of_birth, first_name, last_name, phone_number, address_id)
-VALUES (12345678903, '1990-01-01', 'Vanessa', 'Lopez', 213456789, 22);
+VALUES (12345678903, '1990-01-01', 'Vanessa', 'Lopez', 213456789, 3);
 
 
 
@@ -52,10 +52,10 @@ INSERT INTO plane_model(brand, model_name, number_of_flight_attendants, number_o
 VALUES ('Boeing', 737, 10, 2, 230, 25940);
 
 INSERT INTO plane(airlines, inspection_date, model_id)
-VALUES ('QuatarAirlines', '2022-03-01', 2);
+VALUES ('QuatarAirlines', '2022-03-01', 1);
 
 INSERT INTO plane(airlines, inspection_date, model_id)
-VALUES ('Ryanair', '2021-12-28', 2);
+VALUES ('Ryanair', '2021-12-28', 1);
 
 #
 # INSERT INTO flight(arrival_date, departure_date, price, arrival_place_id, departure_place_id, plane_id)

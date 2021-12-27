@@ -1,4 +1,4 @@
-package model;
+package com.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,7 +28,8 @@ public class Address {
     @Column(nullable = false)
     private int buildingNr;
 
-    private int apartmentNr;
+    @Column(nullable = true)
+    private Integer apartmentNr;
 
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)

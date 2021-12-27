@@ -1,7 +1,8 @@
-package model;
+package com.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +21,11 @@ public class Start {
 
     @EventListener(ApplicationReadyEvent.class)
     public void runExample(){
-        PlaneModel planeModel = new PlaneModel("Boeing", "737", 230, 2, 10, 25940f);
-        Date date = new Date();
-        Plane plane = new Plane(planeModel, "Ryanair", date);
-        planeModelRepo.save(planeModel);
-        planeRepo.save(plane);
+//        PlaneModel planeModel = new PlaneModel("Boeing", "737", 230, 2, 10, 25940f);
+//        Date date = new Date();
+//        Plane plane = new Plane(planeModel, "Ryanair", date);
+//        planeModelRepo.save(planeModel);
+//        planeRepo.save(plane);
         System.out.println("Działam jak coś");
     }
 }

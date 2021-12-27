@@ -1,4 +1,4 @@
-package model;
+package com.model;
 
 import javax.persistence.*;
 
@@ -17,9 +17,9 @@ public class Reservation {
     @JoinColumn(name = "pesel", referencedColumnName = "pesel", nullable = false)
     private PersonalData personalData;
 
-    public Reservation(Flight flightId, PersonalData pesel) {
+    public Reservation(Flight flightId, PersonalData personalData) {
         this.flight = flightId;
-        this.personalData = pesel;
+        this.personalData = personalData;
     }
 
     public Reservation() {
@@ -45,7 +45,7 @@ public class Reservation {
         return personalData;
     }
 
-    public void setPersonalData(PersonalData pesel) {
-        this.personalData = pesel;
+    public void setPersonalData(PersonalData personalData) {
+        this.personalData = personalData;
     }
 }

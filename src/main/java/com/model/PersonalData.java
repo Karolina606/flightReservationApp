@@ -1,9 +1,11 @@
-package model;
+package com.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class PersonalData{
     private String lastName;
 
     @Column(nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(nullable = false)
     private Long phoneNumber;
@@ -41,7 +43,7 @@ public class PersonalData{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    public PersonalData(Long pesel, String firstName, String lastName, Date dateOfBirth, Long phoneNumber, Address address) {
+    public PersonalData(Long pesel, String firstName, String lastName, LocalDate dateOfBirth, Long phoneNumber, Address address) {
         this.pesel = pesel;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -77,11 +79,11 @@ public class PersonalData{
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
