@@ -82,6 +82,16 @@ public class PersonalDataView extends VerticalLayout {
         grid.addClassName("personal-data-grid");
         grid.setSizeFull();
         grid.setColumns("pesel", "dateOfBirth", "firstName", "lastName", "phoneNumber");
+        grid.addColumn(personalData -> personalData.getAddress().getCountry()).setHeader("country");
+        grid.addColumn(personalData -> personalData.getAddress().getCity()).setHeader("city");
+        grid.addColumn(personalData -> personalData.getAddress().getPostcode()).setHeader("postcode");
+        grid.addColumn(personalData -> personalData.getAddress().getStreet()).setHeader("street");
+        grid.addColumn(personalData -> personalData.getAddress().getBuildingNr()).setHeader("building");
+        grid.addColumn(
+                personalData -> personalData.getAddress().getApartmentNr() == null ?
+                        "Empty" :
+                        personalData.getAddress().getApartmentNr()
+        ).setHeader("apartment");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 }

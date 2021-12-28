@@ -58,7 +58,7 @@ public class PersonalDataForm extends FormLayout {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate newBirthDate = LocalDate.parse(dateOfBirth.getValue(), df);
 
-        Address address = service.findAddressById(1);
+        Address address = service.findAddressById(1L);
         PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, address);
         service.savePersonalData(personalData);
     }

@@ -99,7 +99,7 @@ public class Address {
         this.buildingNr = buildingNr;
     }
 
-    public int getApartmentNr() {
+    public Integer getApartmentNr() {
         return apartmentNr;
     }
 
