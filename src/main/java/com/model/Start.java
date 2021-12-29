@@ -1,12 +1,12 @@
 package com.model;
 
+import com.modelsRepos.PlaneModelRepo;
+import com.modelsRepos.PlaneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 @Component
 public class Start {
 

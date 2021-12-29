@@ -1,13 +1,12 @@
 package com.controller;
 
 import com.model.Address;
-import com.model.AddressRepo;
+import com.modelsRepos.AddressRepo;
 import com.model.PersonalData;
-import com.model.PersonalDataRepo;
+import com.modelsRepos.PersonalDataRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

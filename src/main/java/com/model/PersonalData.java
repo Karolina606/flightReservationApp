@@ -5,12 +5,10 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
-public class PersonalData{
+public class PersonalData {
     @Id
     @Column(nullable = false)
     private Long pesel;

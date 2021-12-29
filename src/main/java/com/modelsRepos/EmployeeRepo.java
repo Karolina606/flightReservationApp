@@ -1,8 +1,9 @@
-package com.model;
+package com.modelsRepos;
 
+import com.model.Employee;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReservationRepo extends CrudRepository<Reservation, Long> {
+public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 }

@@ -1,6 +1,8 @@
 package com.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -18,9 +20,9 @@ public class Plane {
     private String airlines;
 
     @Column(nullable = false)
-    private Date inspectionDate;
+    private LocalDate inspectionDate;
 
-    public Plane(PlaneModel modelId, String airlines, Date inspectionDate) {
+    public Plane(PlaneModel modelId, String airlines, LocalDate inspectionDate) {
         this.model = modelId;
         this.airlines = airlines;
         this.inspectionDate = inspectionDate;
@@ -53,11 +55,11 @@ public class Plane {
         return id;
     }
 
-    public Date getInspectionDate() {
+    public LocalDate getInspectionDate() {
         return inspectionDate;
     }
 
-    public void setInspectionDate(Date inspectionDate) {
+    public void setInspectionDate(LocalDate inspectionDate) {
         this.inspectionDate = inspectionDate;
     }
 

@@ -1,5 +1,6 @@
-package com.model;
+package com.modelsRepos;
 
+import com.model.Airport;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

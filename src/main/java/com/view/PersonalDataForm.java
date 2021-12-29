@@ -2,20 +2,19 @@ package com.view;
 
 import com.controller.PersonalDataService;
 import com.model.Address;
-import com.model.AddressRepo;
 import com.model.PersonalData;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.TextField;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class PersonalDataForm extends FormLayout {
     TextField pesel = new TextField("Pesel");
@@ -61,5 +60,6 @@ public class PersonalDataForm extends FormLayout {
         Address address = service.findAddressById(1L);
         PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, address);
         service.savePersonalData(personalData);
+        UI.getCurrent().getPage().reload();
     }
 }

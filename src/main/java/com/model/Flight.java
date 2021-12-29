@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class Flight {
     private Airport arrivalPlace;
 
     @Column(nullable = false)
-    private Date departureDate;
+    private LocalDateTime departureDate;
 
     @Column(nullable = false)
-    private Date arrivalDate;
+    private LocalDateTime arrivalDate;
 
     @ManyToOne
     @JoinColumn(name = "plane_id", referencedColumnName = "id", nullable = false)
@@ -43,7 +44,7 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(Airport departurePlace, Airport arrivalPlace, Date departureDate, Date arrivalDate, Plane plane, BigDecimal price) {
+    public Flight(Airport departurePlace, Airport arrivalPlace, LocalDateTime departureDate, LocalDateTime arrivalDate, Plane plane, BigDecimal price) {
         this.departurePlace = departurePlace;
         this.arrivalPlace = arrivalPlace;
         this.departureDate = departureDate;
@@ -70,19 +71,19 @@ public class Flight {
         this.arrivalPlace = arrivalPlace;
     }
 
-    public Date getDepartureDate() {
+    public LocalDateTime getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Date getArrivalDate() {
+    public LocalDateTime getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(LocalDateTime arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
