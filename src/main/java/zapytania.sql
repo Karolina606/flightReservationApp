@@ -57,9 +57,12 @@ VALUES ('QuatarAirlines', '2022-03-01', 1);
 INSERT INTO plane(airlines, inspection_date, model_id)
 VALUES ('Ryanair', '2021-12-28', 1);
 
-#
-# INSERT INTO flight(arrival_date, departure_date, price, arrival_place_id, departure_place_id, plane_id)
-# VALUES (date_format())
+
+INSERT INTO flight(arrival_date, departure_date, price, arrival_place_id, departure_place_id, plane_id)
+VALUES ('2021-12-31 16:00:00', '2021-12-31 14:00:00', 200.00, 2, 1, 2);
+
+INSERT INTO flight(arrival_date, departure_date, price, arrival_place_id, departure_place_id, plane_id)
+VALUES ('2022-01-10 08:30:00', '2022-01-10 10:30:00', 300.00, 3, 1, 1);
 
 SELECT * FROM airport;
 SELECT * FROM address;

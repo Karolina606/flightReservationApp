@@ -91,7 +91,7 @@ public class Flight {
         return plane;
     }
 
-    public void setPlane(Plane planeId) {
+    public void setPlane(Plane plane) {
         this.plane = plane;
     }
 
