@@ -1,13 +1,11 @@
-package com.client;
+package com.client.views;
 
 //import com.controller.PersonalDataController;
 import com.controller.PersonalDataService;
 import com.model.PersonalData;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,9 +14,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.Objects;
-
-@PageTitle("widok dane osobowe")
+@PageTitle("Dane osobowe")
 @Route(value = "personalDataRestApi")
 public class PersonalDataView extends VerticalLayout {
 
@@ -91,11 +87,11 @@ public class PersonalDataView extends VerticalLayout {
         grid.addClassName("personal-data-grid");
         grid.setSizeFull();
         grid.setColumns("pesel", "dateOfBirth", "firstName", "lastName", "phoneNumber");
-        grid.addColumn(personalData -> personalData.getAddress().getCountry()).setHeader("country");
-        grid.addColumn(personalData -> personalData.getAddress().getCity()).setHeader("city");
-        grid.addColumn(personalData -> personalData.getAddress().getPostcode()).setHeader("postcode");
-        grid.addColumn(personalData -> personalData.getAddress().getStreet()).setHeader("street");
-        grid.addColumn(personalData -> personalData.getAddress().getBuildingNr()).setHeader("building");
+        grid.addColumn(personalData -> personalData.getAddress().getCountry()).setHeader("Country");
+        grid.addColumn(personalData -> personalData.getAddress().getCity()).setHeader("City");
+        grid.addColumn(personalData -> personalData.getAddress().getPostcode()).setHeader("Postcode");
+        grid.addColumn(personalData -> personalData.getAddress().getStreet()).setHeader("Street");
+        grid.addColumn(personalData -> personalData.getAddress().getBuildingNr()).setHeader("Building");
         grid.addColumn(
                 personalData -> personalData.getAddress().getApartmentNr() == null ?
                         "Empty" :

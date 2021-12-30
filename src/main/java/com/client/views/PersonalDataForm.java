@@ -1,11 +1,12 @@
-package com.client;
+package com.client.views;
 
+import com.client.AddressRestClient;
+import com.client.PersonalDataRestClient;
 import com.controller.PersonalDataService;
 import com.model.Address;
 import com.model.PersonalData;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -22,20 +23,29 @@ public class PersonalDataForm extends FormLayout {
     TextField lastName = new TextField("Nazwisko");
     TextField phoneNumber = new TextField("Numer telefonu");
 
+    TextField country = new TextField("Kraj");
+    TextField city = new TextField("Miasto");
+    TextField postcoode = new TextField("Kod pocztowy");
+    TextField street = new TextField("Ulica");
+    TextField building_nr = new TextField("Numer budynku");
+    TextField apartment_nr = new TextField("Numer mieszkania");
+
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancle = new Button("Cancle");
 
-    PersonalDataService service;
+    //PersonalDataService PersonalDataService;
 
     PersonalDataView personalDataViewParent;
+    AddressForm addressForm;
 
     public PersonalDataForm(PersonalDataService service, PersonalDataView personalDataViewParent){
-        this.service = service;
+        //this.service = service;
         this.personalDataViewParent = personalDataViewParent;
         addClassName("personal-data-form");
 
-        add(pesel, dateOfBirth, firstName, lastName, phoneNumber, createButtonLayout());
+        addressForm = new AddressForm();
+        add(pesel, dateOfBirth, firstName, lastName, phoneNumber, addressForm, createButtonLayout());
     }
 
     private Component createButtonLayout() {
@@ -53,9 +63,8 @@ public class PersonalDataForm extends FormLayout {
 
     private void deletePersonData() {
         Long PersonalDataPesel = Long.parseLong(pesel.getValue());
-        RestClient.callDeletePersonalDataApi(PersonalDataPesel);
+        PersonalDataRestClient.callDeletePersonalDataApi(PersonalDataPesel);
         personalDataViewParent.updateList();
-//        UI.getCurrent().getPage().reload();
     }
 
     private void addPersonalData() {
@@ -67,17 +76,28 @@ public class PersonalDataForm extends FormLayout {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate newBirthDate = LocalDate.parse(dateOfBirth.getValue(), df);
 
-        Address address = service.findAddressById(1L);
-        PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, address);
+        //Address address = service.findAddressById(1L);
+
+        // if address already exists
+        Address newAddress = addressForm.createAddres();
+        Address foundAddress = AddressRestClient.returnIfAddressInDataBase(newAddress);
+        Address addressToSave;
+        if ( foundAddress == null){
+            addressToSave = newAddress;
+            AddressRestClient.callCreateAddressApi(addressToSave);
+        }else{
+            addressToSave = foundAddress;
+        }
+
+        PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, addressToSave);
 
         // Jeśli pesel już w bazie zmodyfikuj
-        if (RestClient.callGetPersonalDataByIdApi(newPesel) != null){
-            RestClient.callUpdatePersonalDataApi(personalData);
+        if (PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel) != null){
+            PersonalDataRestClient.callUpdatePersonalDataApi(personalData);
         }else{
-            RestClient.callCreatePersonalDataApi(personalData);
+            PersonalDataRestClient.callCreatePersonalDataApi(personalData);
             //service.savePersonalData(personalData);
         }
         personalDataViewParent.updateList();
-//        UI.getCurrent().getPage().reload();
     }
 }
