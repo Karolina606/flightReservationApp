@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
-public class RestClient {
+public class PersonalDataRestClient {
 
     private static final String GET_ALL_PERSONAL_DATA_API = "http://localhost:8080/personalDataRest";
     private static final String GET_PERSONAL_DATA_BY_ID_API = "http://localhost:8080/personalDataRest/{pesel}";
