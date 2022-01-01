@@ -15,6 +15,7 @@ public class EmployeeRestClient {
     private static final String GET_ALL_EMPLOYEE_API = "http://localhost:8080/employeeRest";
     private static final String GET_EMPLOYEE_BY_ID_API = "http://localhost:8080/employeeRest/{id}";
     private static final String CREATE_EMPLOYEE_API = "http://localhost:8080/employeeRest";
+    private static final String ADD_EMPLOYEE_TO_FLIGHT_CREW_API = "http://localhost:8080/addEmployeeToFlightCrew/{flightId}";
     private static final String UPDATE_EMPLOYEE_API = "http://localhost:8080/employeeRest/{id}";
     private static final String DELETE_EMPLOYEE_API = "http://localhost:8080/employeeRest/{id}";
 
@@ -47,7 +48,19 @@ public class EmployeeRestClient {
 
     public static void callCreateEmployeeApi(Employee employee){
         ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(CREATE_EMPLOYEE_API, employee, Employee.class);
-        System.out.println("Dodano dane osobowe " + employeeResponse.getBody());
+        System.out.println("Dodano pracownika " + employeeResponse.getBody());
+    }
+
+    public static void callAddEmployeeToFlightCrew(Employee employee, Long flightId){
+        Map<String, Long> param = new HashMap<>();
+        param.put("flightId", flightId);
+
+        ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
+        if (employeeResponse.getBody() != null){
+            System.out.println("Dodano pracownika do lotu.");
+        }else{
+            System.err.println("Nie dodano pracownika do lotu.");
+        }
     }
 
     public static void callUpdateEmployeeApi(Employee employee){

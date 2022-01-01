@@ -17,6 +17,7 @@ public class FlightRestClient {
     private static final String CREATE_FLIGHT_API = "http://localhost:8080/flightRest";
     private static final String UPDATE_FLIGHT_API = "http://localhost:8080/flightRest/{id}";
     private static final String DELETE_FLIGHT_API = "http://localhost:8080/flightRest/{id}";
+    private static final String GET_OCCUPIED_SEATS_API = "http://localhost:8080/flightRest/occupiedSeats/{id}";
     //private static final String IF_FLIGHT_IN_DATABASE_API = "http://localhost:8080/flightRest/ifFlightInDatabase/{country}/{city}/{postcode}/{street}/{buildingNr}/{apartmentNr}";
 
 
@@ -61,6 +62,14 @@ public class FlightRestClient {
         param.put("id", id);
 
         restTemplate.delete(DELETE_FLIGHT_API, param);
+    }
+
+    public static Integer callGetOccupiedSeats(Long id){
+        Map<String, Long> param = new HashMap<>();
+        param.put("id", id);
+
+        Integer occupiedSeats = restTemplate.getForObject(GET_OCCUPIED_SEATS_API, Integer.class, param);
+        return occupiedSeats;
     }
 
 //    public static Flight returnIfFlightInDataBase(Flight flight){

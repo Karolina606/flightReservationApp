@@ -93,6 +93,9 @@ public class FlightView extends VerticalLayout {
         grid.addColumn(flight -> flight.getArrivalPlace().getAddress().getCity()).setHeader("ArrivalCity");
         grid.addColumn(flight -> (flight.getPlane().getModel().getBrand() + " " + flight.getPlane().getModel().getModelName())).setHeader("PlaneModel");
         grid.addColumn(flight -> flight.getPlane().getAirlines()).setHeader("Airlines");
+        grid.addColumn(flight -> flight.getPlane().getModel().getNumberOfSeats() - FlightRestClient.callGetOccupiedSeats(flight.getId())).setHeader("FreeSeats");
+        grid.addColumn(flight -> FlightRestClient.callGetOccupiedSeats(flight.getId())).setHeader("OccupiedSeats");
+        grid.addColumn(flight -> flight.getPlane().getAirlines()).setHeader("Airlines");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 }

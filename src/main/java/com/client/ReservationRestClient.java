@@ -15,6 +15,7 @@ public class ReservationRestClient {
     private static final String GET_ALL_RESERVATION_API = "http://localhost:8080/reservationRest";
     private static final String GET_RESERVATION_BY_ID_API = "http://localhost:8080/reservationRest/{id}";
     private static final String CREATE_RESERVATION_API = "http://localhost:8080/reservationRest";
+    private static final String CREATE_MULTIPLE_RESERVATIONS_API = "http://localhost:8080/reservationRest/createMultipleReservations";
     private static final String UPDATE_RESERVATION_API = "http://localhost:8080/reservationRest/{id}";
     private static final String DELETE_RESERVATION_API = "http://localhost:8080/reservationRest/{id}";
     //private static final String IF_RESERVATION_IN_DATABASE_API = "http://localhost:8080/reservationRest/ifReservationInDatabase/{country}/{city}/{postcode}/{street}/{buildingNr}/{apartmentNr}";
@@ -46,7 +47,22 @@ public class ReservationRestClient {
 
     public static void callCreateReservationApi(Reservation reservation){
         ResponseEntity<Reservation> reservationResponse = restTemplate.postForEntity(CREATE_RESERVATION_API, reservation, Reservation.class);
-        System.out.println("Dodano nowy samolot" + reservationResponse.getBody());
+
+        if (reservationResponse.getBody() != null){
+            System.out.println("Dodano nową rezerwację" + reservationResponse.getBody());
+        }else{
+            System.out.println("Niestety nie ma już miejsc na ten lot lub osoba jest za mloda");
+        }
+    }
+
+    public static void callCreateMultipleReservationsApi(List<Reservation> reservations){
+        ResponseEntity<Boolean> reservationsResponse = restTemplate.postForEntity(CREATE_MULTIPLE_RESERVATIONS_API, reservations, Boolean.class);
+
+        if (Boolean.TRUE.equals(reservationsResponse.getBody())){
+            System.out.println("Dodano nowe rezerwacje" + reservationsResponse.getBody());
+        }else{
+            System.out.println("Niestety nie ma już miejsc na ten lot lub nie ma osoby doroslej wsrod rezerwacji");
+        }
     }
 
     public static void callUpdateReservationApi(Reservation reservation){

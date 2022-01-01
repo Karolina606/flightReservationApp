@@ -34,6 +34,12 @@ public class FlightController {
         return flightRepo.findById(id).orElse(null);
     }
 
+    // get occupited seats
+    @GetMapping("occupiedSeats/{id}")
+    public Integer getOccupiedSeatsId(@PathVariable long id) {
+        return flightRepo.getNumberOfOccupiedSeats(id);
+    }
+
     // create flight
     @PostMapping
     public Flight createFlight(@RequestBody Flight flight){

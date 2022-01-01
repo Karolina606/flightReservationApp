@@ -26,7 +26,7 @@ public class EmployeeView extends VerticalLayout {
     public EmployeeView(){
         // Collection<Employee> Employee = controller.getEmployee();
 
-        add(new H2("Dane osobowe"));
+        add(new H2("Pracownicy"));
 
         addClassName("personal-data-view");
         setSizeFull();
