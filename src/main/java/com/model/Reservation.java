@@ -1,24 +1,26 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "flight_id", referencedColumnName = "id", nullable = false)
     private Flight flight;
 
     @ManyToOne
     @JoinColumn(name = "pesel", referencedColumnName = "pesel", nullable = false)
     private PersonalData personalData;
 
-    public Reservation(Flight flightId, PersonalData personalData) {
-        this.flight = flightId;
+    public Reservation(Flight flight, PersonalData personalData) {
+        this.flight = flight;
         this.personalData = personalData;
     }
 
@@ -37,8 +39,8 @@ public class Reservation {
         return flight;
     }
 
-    public void setFlight(Flight flightId) {
-        this.flight = flightId;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
     public PersonalData getPersonalData() {

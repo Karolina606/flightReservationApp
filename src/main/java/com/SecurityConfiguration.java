@@ -1,5 +1,7 @@
 package com;
 
+import com.client.views.FlightView;
+import com.client.views.PersonalDataView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,5 +31,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    public static boolean isAccessGranted(Class<?> securedClass) {
+        final boolean publicView =
+                PersonalDataView.class.equals(securedClass)
+                        // || LoginView.class.equals(securedClass)
+                        || FlightView.class.equals(securedClass);
+
+        // Always allow access to public views
+        if (publicView) {
+            return true;
+        }
+        return false;
     }
 }

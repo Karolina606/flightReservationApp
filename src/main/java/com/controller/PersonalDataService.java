@@ -13,8 +13,8 @@ import java.util.Optional;
 @Service
 public class PersonalDataService {
 
-    private PersonalDataRepo personalDataRepo;
-    private AddressRepo addressRepo;
+    private final PersonalDataRepo personalDataRepo;
+    private final AddressRepo addressRepo;
 
     @Autowired
     public PersonalDataService(PersonalDataRepo personalDataRepo, AddressRepo addresRepo){

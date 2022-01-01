@@ -1,9 +1,15 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Plane {
@@ -14,6 +20,7 @@ public class Plane {
 
     @ManyToOne
     @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private PlaneModel model;
 
     @Column(nullable = false)
@@ -21,6 +28,10 @@ public class Plane {
 
     @Column(nullable = false)
     private LocalDate inspectionDate;
+
+    @OneToMany(mappedBy = "plane", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Flight> flightList;
 
     public Plane(PlaneModel modelId, String airlines, LocalDate inspectionDate) {
         this.model = modelId;
@@ -62,6 +73,14 @@ public class Plane {
     public void setInspectionDate(LocalDate inspectionDate) {
         this.inspectionDate = inspectionDate;
     }
+
+//    public List<Flight> getFlightList() {
+//        return flightList;
+//    }
+//
+//    public void setFlightList(List<Flight> flightList) {
+//        this.flightList = flightList;
+//    }
 
     @Override
     public String toString() {

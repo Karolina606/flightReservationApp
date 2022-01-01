@@ -74,3 +74,31 @@ DELETE FROM address WHERE id > 0;
 DELETE FROM personal_data WHERE pesel = 12345678903;
 DELETE FROM employee WHERE pesel = 12345678903;
 DELETE FROM plane_model WHERE id = 1;
+
+ALTER TABLE address AUTO_INCREMENT = 1;
+ALTER TABLE personal_data AUTO_INCREMENT = 1;
+ALTER TABLE plane_model AUTO_INCREMENT = 1;
+ALTER TABLE plane AUTO_INCREMENT = 1;
+ALTER TABLE flight AUTO_INCREMENT = 1;
+ALTER TABLE airport AUTO_INCREMENT = 1;
+ALTER TABLE flight_crew AUTO_INCREMENT = 1;
+ALTER TABLE reservation AUTO_INCREMENT = 1;
+ALTER TABLE employee AUTO_INCREMENT = 1;
+ALTER TABLE user AUTO_INCREMENT = 1;
+
+UPDATE employee SET employee_role = 1 WHERE employee_role = 2;
+
+UPDATE flight SET departure_date =  FROM_UNIXTIME(
+            UNIX_TIMESTAMP('2022-01-01 00:00:00') + FLOOR(0 + (RAND() * 31531500))
+    ), arrival_date = FROM_UNIXTIME(UNIX_TIMESTAMP(departure_date) + FLOOR(0 + (RAND() * 43000))) WHERE true;
+
+UPDATE plane SET inspection_date =  FROM_UNIXTIME(
+            UNIX_TIMESTAMP('2022-01-01 00:00:00') + FLOOR(0 + (RAND() * 31531500))) WHERE true;
+
+UPDATE employee SET employee_role = employee_role where true;
+
+UPDATE user SET role = 0 WHERE  role = 1;
+UPDATE user SET role = 1 WHERE  role = 2;
+UPDATE user SET role = 2 WHERE  role = 3;
+
+

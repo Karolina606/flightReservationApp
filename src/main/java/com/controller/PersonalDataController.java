@@ -6,15 +6,21 @@ import com.modelsRepos.PersonalDataRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Component
 @RequestMapping("/personalDataRest")
 public class PersonalDataController {
     @Autowired
     private PersonalDataRepo personalDataRepo;
+
+    public PersonalDataController(PersonalDataRepo personalDataRepo) {
+        this.personalDataRepo = personalDataRepo;
+    }
 
     // get all personal data
     @GetMapping

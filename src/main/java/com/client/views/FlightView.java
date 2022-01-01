@@ -19,7 +19,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 @PageTitle("Loty")
-@Route(value = "flightsRestApi")
+@Route(value = "flightRestApi")
 public class FlightView extends VerticalLayout {
 
     Grid<Flight> grid = new Grid<>(Flight.class);
@@ -85,7 +85,10 @@ public class FlightView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("id", "departureDate", "arrivalDate", "price");
         grid.addColumn(flight -> flight.getDeparturePlace().getName()).setHeader("DepartureAirport");
-        grid.addColumn(flight -> flight.getDeparturePlace().getAddress().getCity()).setHeader("DepartureCity");
+        grid.addColumn(flight -> flight.getDeparturePlace().getAddress().getCity() == null ?
+                "Empty" :
+                flight.getDeparturePlace().getAddress().getCity()
+        ).setHeader("DepartureCity");
         grid.addColumn(flight -> flight.getArrivalPlace().getName()).setHeader("ArrivalAirport");
         grid.addColumn(flight -> flight.getArrivalPlace().getAddress().getCity()).setHeader("ArrivalCity");
         grid.addColumn(flight -> (flight.getPlane().getModel().getBrand() + " " + flight.getPlane().getModel().getModelName())).setHeader("PlaneModel");

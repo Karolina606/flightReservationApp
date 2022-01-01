@@ -1,5 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -10,7 +12,7 @@ import java.util.List;
 @Entity
 public class PersonalData {
     @Id
-    @Column(nullable = false)
+    @Column(name = "pesel", nullable = false, unique = true)
     private Long pesel;
 
     @Column(nullable = false)
@@ -29,15 +31,15 @@ public class PersonalData {
     @JoinColumn(referencedColumnName = "id", nullable = false)
     private Address address;
 
-    @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
 
-    @OneToMany(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Reservation> reservations;
 
-    @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "personalData", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

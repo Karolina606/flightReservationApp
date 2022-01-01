@@ -6,19 +6,25 @@ import com.modelsRepos.FlightRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Component
 @RequestMapping("/flightRest")
 public class FlightController {
     @Autowired
     private FlightRepo flightRepo;
 
+    public FlightController(FlightRepo flightRepo) {
+        this.flightRepo = flightRepo;
+    }
+
     // get all flight
     @GetMapping
-    public List<Flight> getAllFlightes() {
+    public List<Flight> getAllFlights() {
         return (List<Flight>) flightRepo.findAll();
     }
 

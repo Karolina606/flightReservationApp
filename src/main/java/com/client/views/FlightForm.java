@@ -1,13 +1,7 @@
 package com.client.views;
 
-import com.client.AddressRestClient;
-import com.client.AirportRestClient;
-import com.client.FlightRestClient;
-import com.client.PlaneRestClient;
-import com.model.Address;
-import com.model.Airport;
-import com.model.Flight;
-import com.model.Plane;
+import com.client.*;
+import com.model.*;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -20,6 +14,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlightForm extends FormLayout {
     TextField flightId = new TextField("Id lotu (do usuwania)");
@@ -74,6 +70,9 @@ public class FlightForm extends FormLayout {
         Plane plane = PlaneRestClient.callGetPlaneByIdApi(newPlaneId);
         Airport departureAirport = AirportRestClient.callGetAirportByIdApi(newDepartureAirportId);
         Airport arrivalAirport = AirportRestClient.callGetAirportByIdApi(newArrivalAirportId);
+
+//        List<Employee> newCrew = new ArrayList<>();
+//        newCrew.add(EmployeeRestClient.callGetEmployeeByIdApi(1L));
 
         Flight flight = new Flight(departureAirport, arrivalAirport, newDepartureDate, newArrivalDate, plane, newPrice);
         FlightRestClient.callCreateFlightApi(flight);

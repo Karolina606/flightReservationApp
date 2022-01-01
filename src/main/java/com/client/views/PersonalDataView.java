@@ -1,6 +1,7 @@
 package com.client.views;
 
 //import com.controller.PersonalDataController;
+import com.client.PersonalDataRestClient;
 import com.controller.PersonalDataService;
 import com.model.PersonalData;
 import com.vaadin.flow.component.Component;
@@ -45,7 +46,8 @@ public class PersonalDataView extends VerticalLayout {
     }
 
     public void updateList() {
-        grid.setItems(service.findAllData(filterText.getValue()));
+        //grid.setItems(service.findAllData(filterText.getValue()));
+        grid.setItems(PersonalDataRestClient.callGetAllPersonalDataApi());
     }
 
     private Component getContent() {
