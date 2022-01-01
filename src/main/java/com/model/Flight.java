@@ -6,13 +6,14 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @ManyToOne
@@ -29,16 +30,20 @@ public class Flight {
     @Column(nullable = false)
     private LocalDateTime arrivalDate;
 
+    @Column(nullable = false)
+    private BigDecimal price;
+
     @ManyToOne
     @JoinColumn(name = "plane_id", referencedColumnName = "id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Plane plane;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Reservation> reservations;
+    private Set<Reservation> reservations;
 
-    @ManyToMany
-    @JoinColumn(name = "crew", referencedColumnName = "id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(referencedColumnName = "id")
     private List<Employee> crew;
 
     public Flight() {
@@ -52,8 +57,6 @@ public class Flight {
         this.plane = plane;
         this.price = price;
     }
-
-    private BigDecimal price;
 
     public Airport getDeparturePlace() {
         return departurePlace;
@@ -109,5 +112,21 @@ public class Flight {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+//    public List<Reservation> getReservations() {
+//        return reservations;
+//    }
+//
+//    public void setReservations(List<Reservation> reservations) {
+//        this.reservations = reservations;
+//    }
+
+    public List<Employee> getCrew() {
+        return crew;
+    }
+
+    public void setCrew(List<Employee> crew) {
+        this.crew = crew;
     }
 }

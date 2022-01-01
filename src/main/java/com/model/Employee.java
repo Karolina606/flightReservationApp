@@ -1,5 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,7 +13,7 @@ import java.util.List;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @OneToOne
@@ -20,18 +22,19 @@ public class Employee {
     private PersonalData personalData;
 
     @Column(nullable = false)
-    private EmployeeEnum empolyeeRole;
+    private EmployeeEnum employeeRole;
 
     @Column(nullable = false)
     private BigDecimal salary;
 
-    @ManyToMany(mappedBy = "crew", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Flight> flights;
+    @JsonIgnore
+    List<Flight> flights;
 
     public Employee(PersonalData pesel, EmployeeEnum empolyeeRole, BigDecimal salary) {
         this.personalData = pesel;
-        this.empolyeeRole = empolyeeRole;
+        this.employeeRole = empolyeeRole;
         this.salary = salary;
     }
 
@@ -55,11 +58,11 @@ public class Employee {
     }
 
     public EmployeeEnum getEmpolyeeRole() {
-        return empolyeeRole;
+        return employeeRole;
     }
 
     public void setEmpolyeeRole(EmployeeEnum empolyeeRole) {
-        this.empolyeeRole = empolyeeRole;
+        this.employeeRole = empolyeeRole;
     }
 
     public BigDecimal getSalary() {
