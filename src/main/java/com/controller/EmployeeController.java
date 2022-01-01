@@ -14,8 +14,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/employeeRest")
 public class EmployeeController {
+
     @Autowired
     private EmployeeRepo employeeRepo;
+
+    public EmployeeController(EmployeeRepo employeeRepo) {
+        this.employeeRepo = employeeRepo;
+    }
 
     // get all employee
     @GetMapping

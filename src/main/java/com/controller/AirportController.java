@@ -13,8 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/airportRest")
 public class AirportController {
+
     @Autowired
     private AirportRepo airportRepo;
+
+    public AirportController(AirportRepo airportRepo) {
+        this.airportRepo = airportRepo;
+    }
 
     // get all airport
     @GetMapping

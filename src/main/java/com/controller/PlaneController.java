@@ -13,8 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/planeRest")
 public class PlaneController {
+
     @Autowired
     private PlaneRepo planeRepo;
+
+    public PlaneController(PlaneRepo planeRepo) {
+        this.planeRepo = planeRepo;
+    }
+
 
     // get all plane
     @GetMapping

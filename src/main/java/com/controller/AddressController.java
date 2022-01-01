@@ -13,8 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/addressRest")
 public class AddressController {
+
     @Autowired
     private AddressRepo addressRepo;
+
+    public AddressController(AddressRepo addressRepo) {
+        this.addressRepo = addressRepo;
+    }
 
     // get all address
     @GetMapping
