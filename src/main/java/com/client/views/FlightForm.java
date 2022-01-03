@@ -6,6 +6,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,12 +21,14 @@ import java.util.List;
 
 public class FlightForm extends FormLayout {
     TextField flightId = new TextField("Id lotu (do usuwania)");
-    TextField departureDate = new TextField("Data odlotu");
-    TextField arrivalDate = new TextField("Data przylotu");
-    TextField departureAirportId = new TextField("Id lotniska odlotu");
-    TextField arrivalAirportId = new TextField("Id lotniska przylotu");
+
+    DateTimePicker departureDate = new DateTimePicker("Data odlotu");
+    DateTimePicker arrivalDate = new DateTimePicker("Data przylotu");
+
+    ComboBox<Airport> departureAirport = new ComboBox<>("Lotnisko odlotu");
+    ComboBox<Airport> arrivalAirport = new ComboBox<>("Lotnisko przylotu");
     TextField price = new TextField("Cena");
-    TextField planeId = new TextField("Id samolotu");
+    ComboBox<Plane> plane = new ComboBox<>("Samolot");
 
 
     Button save = new Button("Save");
@@ -35,7 +39,18 @@ public class FlightForm extends FormLayout {
 
     public FlightForm(FlightView flightViewParent){
         this.flightViewParent = flightViewParent;
-        add(departureDate, arrivalDate, departureAirportId, arrivalAirportId, price, planeId, createButtonLayout());
+
+        // Załadowanie danych do comboboxow
+        departureAirport.setItems(AirportRestClient.callGetAllAirportApi());
+        departureAirport.setItemLabelGenerator(Airport::getName);
+
+        arrivalAirport.setItems(AirportRestClient.callGetAllAirportApi());
+        arrivalAirport.setItemLabelGenerator(Airport::getName);
+
+        plane.setItems(PlaneRestClient.callGetAllPlaneApi());
+        plane.setItemLabelGenerator(Plane::toStringShort);
+
+        add(departureDate, arrivalDate, departureAirport, arrivalAirport, price, plane, createButtonLayout());
     }
 
     private Component createButtonLayout() {
@@ -58,23 +73,17 @@ public class FlightForm extends FormLayout {
     }
 
     private void addFlight() {
-        Long newDepartureAirportId = Long.parseLong(departureAirportId.getValue());
-        Long newArrivalAirportId = Long.parseLong(arrivalAirportId.getValue());
-        BigDecimal newPrice = BigDecimal.valueOf(Long.parseLong(price.getValue()));
-        Long newPlaneId = Long.parseLong(planeId.getValue());
+        BigDecimal newPrice = BigDecimal.valueOf(Float.parseFloat(price.getValue()));
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime newDepartureDate = LocalDateTime.parse(departureDate.getValue(), df);
-        LocalDateTime newArrivalDate = LocalDateTime.parse(arrivalDate.getValue(), df);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss");
+        LocalDateTime newDepartureDate = departureDate.getValue();
+        LocalDateTime newArrivalDate = arrivalDate.getValue();
 
-        Plane plane = PlaneRestClient.callGetPlaneByIdApi(newPlaneId);
-        Airport departureAirport = AirportRestClient.callGetAirportByIdApi(newDepartureAirportId);
-        Airport arrivalAirport = AirportRestClient.callGetAirportByIdApi(newArrivalAirportId);
+        Plane newPlane = plane.getValue();
+        Airport newDepartureAirport = departureAirport.getValue();
+        Airport newArrivalAirport = arrivalAirport.getValue();
 
-//        List<Employee> newCrew = new ArrayList<>();
-//        newCrew.add(EmployeeRestClient.callGetEmployeeByIdApi(1L));
-
-        Flight flight = new Flight(departureAirport, arrivalAirport, newDepartureDate, newArrivalDate, plane, newPrice);
+        Flight flight = new Flight(newDepartureAirport, newArrivalAirport, newDepartureDate, newArrivalDate, newPlane, newPrice);
         FlightRestClient.callCreateFlightApi(flight);
 
         flightViewParent.updateList();

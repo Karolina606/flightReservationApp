@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -41,8 +42,14 @@ public class EmployeeController {
         return employeeRepo.findById(id).orElse(null);
     }
 
+    // get employee by role
+    @GetMapping("/role/{role}")
+    public List<Employee> getAllEmployeesWithRole(@PathVariable int role) {
+        return (List<Employee>) employeeRepo.getEmployeesWithRole(role);
+    }
+
     // add employee to flight
-    @PostMapping("/addEmployeeToFlightCrew/{flightId}")
+    @PutMapping("/addEmployeeToFlightCrew/{flightId}")
     public Employee addEmployeeToFlightCrew(@RequestBody Employee employee, @PathVariable Long flightId){
         // doda członka załogi do lotu jeśli:
         // 1. Nie wylatał on jeszcze w tym miesiacu swoich godzin (100 - stewardessa, 80 - pilot)
@@ -56,33 +63,15 @@ public class EmployeeController {
             return null;
         }
 
-        long flightDurationInHours = Math.round(ChronoUnit.MINUTES.between(flight.getDepartureDate(), flight.getArrivalDate()) / 60.0 );
-        long workedHoursInMonth = employeeRepo.getWorkedHoursInMonth(employee.getId(), flight.getDepartureDate());
-        int numberOfPilotsForFlight = employeeRepo.howManyPilotsAlreadyInFlight(flightId);
-        int numberOfStewardessForFlight = employeeRepo.howManyStewardessAlreadyInFlight(flightId);
-
-        if (employee.getEmpolyeeRole() == EmployeeEnum.PILOT && workedHoursInMonth + flightDurationInHours <= 80){
-            // sprawdzamy czy nie jest już odpowiednia liczba pilotow przypisana do lotu
-            if (numberOfPilotsForFlight < flight.getPlane().getModel().getNumberOfPilots()){
-                System.out.println("Lot nie ma jeszcze wszystkich pilotow, mozna przypisac.");
-                flight.getCrew().add(employee);
-                return employeeRepo.save(employee);
-            }else{
-                System.err.println("Lot ma juz wyszytkich pilotow, nie mozna przypisac tego pilota do tego lotu.");
-            }
-        }
-        else if (employee.getEmpolyeeRole() == EmployeeEnum.STEWARDESS && workedHoursInMonth + flightDurationInHours <= 100){
-            // sprawdzamy czy nie jest już odpowiednia liczba stewardess przypisana do lotu
-            if (numberOfStewardessForFlight < flight.getPlane().getModel().getNumberOfFlightAttendants()){
-                System.out.println("Lot nie ma jeszcze wszystkie stewardess, mozna przypisac.");
-                flight.getCrew().add(employee);
-                return employeeRepo.save(employee);
-            }else{
-                System.err.println("Lot ma juz wyszytkie stewardess, nie mozna przypisac tego pilota do tego lotu.");
-            }
-        }
-        else{
-            System.err.println("Pracownik nie moze poleciec az tyle godzin we wskazanym miesiacu");
+        // Jeśli warunki spełnione
+        if (ifEmployeeHasLeftHoursInMonth(employee, flightId)
+                && ifEmployeeRoleFreeSpotForFlight(employee, flightId)
+                && ifTimeOfFlightDoesNotOverlap(employee, flightId)){
+            flight.getCrew().add(employee);
+            flightRepo.save(flight);
+            System.out.println("Już zapisuje");
+            return employee;
+            //return employeeRepo.save(employee);
         }
         return null;
     }
@@ -113,5 +102,98 @@ public class EmployeeController {
         employeeRepo.delete(foundEmployee);
 
         return ResponseEntity.ok().build();
+    }
+
+    private boolean ifEmployeeHasLeftHoursInMonth(Employee employee, Long flightId){
+        // Najpierw znadz lot, czy on wgl istnieje
+        Flight flight;
+        if (flightRepo.findById(flightId).isPresent()){
+            flight = flightRepo.findById(flightId).get();
+        }else{
+            System.err.println("Nie znaleziono lotu, id= " + flightId);
+            return false;
+        }
+
+        // Zapisz godziny w tygodniu
+        long flightDurationInHours = Math.round(ChronoUnit.MINUTES.between(flight.getDepartureDate(), flight.getArrivalDate()) / 60.0 );
+        long workedHoursInMonth = employeeRepo.getWorkedHoursInMonth(employee.getId(), flight.getDepartureDate());
+
+        if (employee.getEmpolyeeRole() == EmployeeEnum.PILOT && workedHoursInMonth + flightDurationInHours <= 80){
+            return true;
+        }
+        else if (employee.getEmpolyeeRole() == EmployeeEnum.STEWARDESS && workedHoursInMonth + flightDurationInHours <= 100){
+            return true;
+        }
+        else{
+            System.err.println("Pracownik nie moze poleciec az tyle godzin we wskazanym miesiacu");
+            return false;
+        }
+    }
+
+    private boolean ifEmployeeRoleFreeSpotForFlight(Employee employee, Long flightId){
+        // Najpierw znajdzmy lot
+        Flight flight;
+        if (flightRepo.findById(flightId).isPresent()){
+            flight = flightRepo.findById(flightId).get();
+        }else{
+            System.err.println("Nie znaleziono lotu, id= " + flightId);
+            return false;
+        }
+
+        int numberOfPilotsForFlight = employeeRepo.howManyPilotsAlreadyInFlight(flightId);
+        int numberOfStewardessForFlight = employeeRepo.howManyStewardessAlreadyInFlight(flightId);
+
+        if (employee.getEmpolyeeRole() == EmployeeEnum.PILOT){
+            // sprawdzamy czy nie jest już odpowiednia liczba pilotow przypisana do lotu
+            if (numberOfPilotsForFlight < flight.getPlane().getModel().getNumberOfPilots()){
+                System.out.println("Lot nie ma jeszcze wszystkich pilotow, mozna przypisac.");
+                return true;
+            }else{
+                System.err.println("Lot ma juz wyszytkich pilotow, nie mozna przypisac tego pilota do tego lotu.");
+                return false;
+            }
+        }
+        else{
+            // if(employee.getEmpolyeeRole() == EmployeeEnum.STEWARDESS)
+            // sprawdzamy czy nie jest już odpowiednia liczba stewardess przypisana do lotu
+            if (numberOfStewardessForFlight < flight.getPlane().getModel().getNumberOfFlightAttendants()){
+                System.out.println("Lot nie ma jeszcze wszystkie stewardess, mozna przypisac.");
+                return true;
+            }else{
+                System.err.println("Lot ma juz wyszytkie stewardess, nie mozna przypisac tego pilota do tego lotu.");
+                return false;
+            }
+        }
+    }
+
+    private boolean ifTimeOfFlightDoesNotOverlap(Employee employee, Long flightId){
+        // Najpierw znajdzmy lot
+        Flight flight;
+        if (flightRepo.findById(flightId).isPresent()){
+            flight = flightRepo.findById(flightId).get();
+        }else{
+            System.err.println("Nie znaleziono lotu, id= " + flightId);
+            return false;
+        }
+
+        // Pobranie wszystkich dat wylotow i przylotow
+        List<LocalDateTime> departuresDates = employeeRepo.getAllDepartureDatesOfEmployee(employee.getId());
+        List<LocalDateTime> arrivalDates = employeeRepo.getAllArrivalDatesOfEmployee(employee.getId());
+
+        // Czy któraś z dat nie nakłąda się z datą aktualnego lotu do dodania
+        int numberOfDates =  departuresDates.size();
+        for(int i = 0; i < numberOfDates; i++){
+            if(flight.getDepartureDate().isAfter(departuresDates.get(i)) &&
+                    flight.getDepartureDate().isBefore(arrivalDates.get(i))){
+                return false;
+            }
+
+            if(flight.getArrivalDate().isAfter(departuresDates.get(i)) &&
+                    flight.getArrivalDate().isBefore(arrivalDates.get(i))){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

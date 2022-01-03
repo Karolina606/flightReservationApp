@@ -2,13 +2,17 @@ package com.controller;
 
 
 import com.model.Flight;
+import com.model.Plane;
 import com.modelsRepos.FlightRepo;
+import com.modelsRepos.PlaneRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -17,9 +21,11 @@ import java.util.List;
 public class FlightController {
     @Autowired
     private FlightRepo flightRepo;
+    private PlaneRepo planeRepo;
 
-    public FlightController(FlightRepo flightRepo) {
+    public FlightController(FlightRepo flightRepo, PlaneRepo planeRepo) {
         this.flightRepo = flightRepo;
+        this.planeRepo = planeRepo;
     }
 
     // get all flight
@@ -43,7 +49,25 @@ public class FlightController {
     // create flight
     @PostMapping
     public Flight createFlight(@RequestBody Flight flight){
-        return flightRepo.save(flight);
+        // Sprawdzenie samolotu, czy przegląd jest ważny
+        Plane plane;
+        if(planeRepo.findById(flight.getPlane().getId()).isPresent()){
+            plane = planeRepo.findById(flight.getPlane().getId()).get();
+            LocalDateTime arrivalDate = flight.getArrivalDate();
+            LocalDateTime inspectionDate = LocalDateTime.of(plane.getInspectionDate(), LocalTime.of(0,0,0));
+
+            if(arrivalDate.isBefore(inspectionDate)){
+                System.out.println("Samolot bedzie mial wazny przeglad podczas lotu, mozna go dodac.");
+                return flightRepo.save(flight);
+            }
+            else{
+                System.err.println("Niestety data waznosci przegladu samolotu nie pozwala na dodanie go do lotu.");
+                return null;
+            }
+        }else{
+            System.err.println("Nie ma samolotu o tym id, nie mozesz go przypisać do lotu, id= " + flight.getPlane().getId());
+            return null;
+        }
     }
 
     // update flight
@@ -56,9 +80,21 @@ public class FlightController {
         foundFlight.setDeparturePlace(flight.getDeparturePlace());
         foundFlight.setArrivalPlace(flight.getArrivalPlace());
         foundFlight.setPrice(flight.getPrice());
-        foundFlight.setPlane(flight.getPlane());
 
-        return flightRepo.save(foundFlight);
+        // sprawdzenie czy samolot moze byc przypisany do lotu
+        LocalDateTime arrivalDate = flight.getArrivalDate();
+        LocalDateTime inspectionDate = LocalDateTime.of(flight.getPlane().getInspectionDate(), LocalTime.of(0,0,0));
+
+        if(arrivalDate.isBefore(inspectionDate)){
+            System.out.println("Samolot bedzie mial wazny przeglad podczas lotu, mozna go dodac.");
+            foundFlight.setPlane(flight.getPlane());
+            return flightRepo.save(foundFlight);
+        }
+        else{
+            System.err.println("Niestety data waznosci przegladu samolotu nie pozwala na dodanie go do lotu.");
+            return null;
+        }
+        //return flightRepo.save(foundFlight);
     }
 
     // delete flight

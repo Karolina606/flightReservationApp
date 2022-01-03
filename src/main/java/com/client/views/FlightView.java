@@ -11,6 +11,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -25,6 +26,7 @@ public class FlightView extends VerticalLayout {
     Grid<Flight> grid = new Grid<>(Flight.class);
     TextField filterText = new TextField();
     FlightForm form;
+    CrewView crewView = new CrewView();
 
     public FlightView(){
         add(new H2("Loty"));
@@ -33,6 +35,7 @@ public class FlightView extends VerticalLayout {
 
         configureGrid();
         configureForm();
+        crewView.setVisible(false);
 
         add(
                 getToolbar(),
@@ -47,7 +50,8 @@ public class FlightView extends VerticalLayout {
     }
 
     private Component getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
+        HorizontalLayout content = new HorizontalLayout(grid, crewView, form);
+        content.setFlexGrow(2, grid);
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
         content.addClassName("content");
@@ -70,10 +74,17 @@ public class FlightView extends VerticalLayout {
 
         Button addFlightBtn = new Button("Manage flights");
         addFlightBtn.addClickListener(event -> showHideFlightManager());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addFlightBtn);
+
+        Button showCrewBtn = new Button("Show crew");
+        showCrewBtn.addClickListener(event -> showHideCrewManager());
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addFlightBtn, showCrewBtn);
         toolbar.addClassName("toolbar");
 
         return toolbar;
+    }
+
+    private void showHideCrewManager() {
+        crewView.setVisible(!crewView.isVisible());
     }
 
     private void showHideFlightManager() {
@@ -96,6 +107,21 @@ public class FlightView extends VerticalLayout {
         grid.addColumn(flight -> flight.getPlane().getModel().getNumberOfSeats() - FlightRestClient.callGetOccupiedSeats(flight.getId())).setHeader("FreeSeats");
         grid.addColumn(flight -> FlightRestClient.callGetOccupiedSeats(flight.getId())).setHeader("OccupiedSeats");
         grid.addColumn(flight -> flight.getPlane().getAirlines()).setHeader("Airlines");
+
+        grid.addColumn(new ComponentRenderer<>(flight -> {
+                    Button showCrewBtn = new Button("Show crew");
+                    showCrewBtn.addClickListener(click -> {
+                        crewView.setFlight(flight);
+                        crewView.setVisible(true);
+                    });
+                    showCrewBtn.setWidth("100%");
+
+                    HorizontalLayout editLayout = new HorizontalLayout(showCrewBtn);
+                    editLayout.setWidth("100%");
+                    return editLayout;
+                }))
+                .setHeader("Show crew");
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 }

@@ -1,19 +1,21 @@
 package com.client;
 
 import com.model.Employee;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeRestClient {
 
     private static final String GET_ALL_EMPLOYEE_API = "http://localhost:8080/employeeRest";
     private static final String GET_EMPLOYEE_BY_ID_API = "http://localhost:8080/employeeRest/{id}";
+    private static final String GET_EMPLOYEE_WITH_ROLE_API = "http://localhost:8080/employeeRest/role/{role}";
     private static final String CREATE_EMPLOYEE_API = "http://localhost:8080/employeeRest";
     private static final String ADD_EMPLOYEE_TO_FLIGHT_CREW_API = "http://localhost:8080/addEmployeeToFlightCrew/{flightId}";
     private static final String UPDATE_EMPLOYEE_API = "http://localhost:8080/employeeRest/{id}";
@@ -21,8 +23,6 @@ public class EmployeeRestClient {
 
 
     static RestTemplate restTemplate = new RestTemplate();
-    public static void main(String[] args){
-    }
 
     public static List<Employee> callGetAllEmployeeApi(){
         HttpHeaders headers = new HttpHeaders();
@@ -46,6 +46,20 @@ public class EmployeeRestClient {
         return employee;
     }
 
+    public static List<Employee> callGetEmployeeWithRoleApi(int role){
+        Map<String, Integer> param = new HashMap<>();
+        param.put("role", role);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+        ResponseEntity<List<Employee>> result = restTemplate.exchange(GET_EMPLOYEE_WITH_ROLE_API, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Employee>>() {}, param);
+        System.out.println(result.getBody());
+        return result.getBody();
+    }
+
     public static void callCreateEmployeeApi(Employee employee){
         ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(CREATE_EMPLOYEE_API, employee, Employee.class);
         System.out.println("Dodano pracownika " + employeeResponse.getBody());
@@ -55,12 +69,22 @@ public class EmployeeRestClient {
         Map<String, Long> param = new HashMap<>();
         param.put("flightId", flightId);
 
-        ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
-        if (employeeResponse.getBody() != null){
-            System.out.println("Dodano pracownika do lotu.");
-        }else{
-            System.err.println("Nie dodano pracownika do lotu.");
-        }
+        restTemplate = new RestTemplate();
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM));
+        restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
+
+        restTemplate.put(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, param);
+//
+//
+//        //ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
+//        ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
+//
+//        if (employeeResponse.getBody() != null){
+//            System.out.println("Dodano pracownika do lotu.");
+//        }else{
+//            System.err.println("Nie dodano pracownika do lotu.");
+//        }
     }
 
     public static void callUpdateEmployeeApi(Employee employee){

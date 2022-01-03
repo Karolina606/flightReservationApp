@@ -98,7 +98,7 @@ public class PersonalDataView extends VerticalLayout {
                 personalData -> personalData.getAddress().getApartmentNr() == null ?
                         "Empty" :
                         personalData.getAddress().getApartmentNr()
-        ).setHeader("apartment");
+        ).setHeader("Apartment");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 }

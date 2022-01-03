@@ -82,6 +82,10 @@ public class Plane {
 //        this.flightList = flightList;
 //    }
 
+    public String toStringShort(){
+        return  id + " " + model.getBrand() + " " + model.getModelName();
+    }
+
     @Override
     public String toString() {
         return "Plane{" +

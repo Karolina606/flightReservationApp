@@ -17,9 +17,6 @@ public class PersonalDataRestClient {
 
 
     static RestTemplate restTemplate = new RestTemplate();
-    public static void main(String[] args){
-        callGetAllPersonalDataApi();
-    }
 
     public static List<PersonalData> callGetAllPersonalDataApi(){
         HttpHeaders headers = new HttpHeaders();

@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface EmployeeRepo extends CrudRepository<Employee, Long> {
@@ -36,4 +37,24 @@ public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 			"WHERE e.employee_role = 1 AND fc.flights_id = :flightId",
 			nativeQuery = true)
 	Integer howManyStewardessAlreadyInFlight(@Param("flightId") Long flightId);
+
+	// Zwraca wszystkie daty wylotów danego pracownika
+	@Query(value = "SELECT f.departure_date FROM flight_crew fc " +
+			"INNER JOIN flight f ON f.id = fc.flights_id " +
+			"WHERE fc.crew_id = :employeeId",
+			nativeQuery = true)
+	List<LocalDateTime> getAllDepartureDatesOfEmployee(@Param("employeeId") Long employeeId);
+
+	// Zwraca wszystkie daty przylotow danego pracownika
+	@Query(value = "SELECT f.arrival_date FROM flight_crew fc " +
+			"INNER JOIN flight f ON f.id = fc.flights_id " +
+			"WHERE fc.crew_id = :employeeId",
+			nativeQuery = true)
+	List<LocalDateTime> getAllArrivalDatesOfEmployee(@Param("employeeId") Long employeeId);
+
+	// Zwraca wszystkich pracownikow z dana rola
+	@Query(value = "SELECT * FROM employee e " +
+			"WHERE e.employee_role = :employeeRole",
+			nativeQuery = true)
+	List<Employee> getEmployeesWithRole(@Param("employeeRole") int employeeRole);
 }

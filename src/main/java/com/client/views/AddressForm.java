@@ -23,8 +23,6 @@ public class AddressForm extends FormLayout {
     TextField apartmentNr = new TextField("Numer mieszkania");
 
     public AddressForm(){
-        addClassName("address-form");
-
         add(country, city, postcode, street, buildingNr, apartmentNr);
     }
 

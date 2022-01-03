@@ -17,7 +17,7 @@ public class Employee {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "pesel", referencedColumnName = "pesel",nullable = false)
+    @JoinColumn(name = "pesel", referencedColumnName = "pesel", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PersonalData personalData;
 

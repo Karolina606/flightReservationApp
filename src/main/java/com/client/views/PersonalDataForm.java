@@ -9,6 +9,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -18,7 +19,8 @@ import java.time.format.DateTimeFormatter;
 
 public class PersonalDataForm extends FormLayout {
     TextField pesel = new TextField("Pesel");
-    TextField dateOfBirth = new TextField("Data urodzenia");
+
+    DateTimePicker dateOfBirth  = new DateTimePicker("Data urodzenia");
     TextField firstName = new TextField("Imie");
     TextField lastName = new TextField("Nazwisko");
     TextField phoneNumber = new TextField("Numer telefonu");
@@ -43,6 +45,13 @@ public class PersonalDataForm extends FormLayout {
         //this.service = service;
         this.personalDataViewParent = personalDataViewParent;
         addClassName("personal-data-form");
+
+
+        pesel.setRequired(true);
+        dateOfBirth.setRequiredIndicatorVisible(true);
+        firstName.setRequired(true);
+        lastName.setRequired(true);
+        phoneNumber.setRequired(true);
 
         addressForm = new AddressForm();
         add(pesel, dateOfBirth, firstName, lastName, phoneNumber, addressForm, createButtonLayout());
@@ -69,12 +78,12 @@ public class PersonalDataForm extends FormLayout {
 
     private void addPersonalData() {
         Long newPesel = Long.parseLong(pesel.getValue());
-        String newFirstName = firstName.getValue() ;
+        String newFirstName = firstName.getValue();
         String newLastName = lastName.getValue();
         Long newPhoneNumber = Long.parseLong(phoneNumber.getValue());
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newBirthDate = LocalDate.parse(dateOfBirth.getValue(), df);
+        LocalDate newBirthDate = dateOfBirth.getValue().toLocalDate();
 
         //Address address = service.findAddressById(1L);
 

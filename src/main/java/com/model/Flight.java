@@ -43,7 +43,16 @@ public class Flight {
     private Set<Reservation> reservations;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(referencedColumnName = "id")
+    @JoinTable(
+            name = "flight_crew",
+            joinColumns = {
+                    @JoinColumn(name = "flights_id", nullable = false, updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "crew_id", nullable = false, updatable = false)
+            }
+    )
+    //@JoinColumn(referencedColumnName = "id")
     private List<Employee> crew;
 
     public Flight() {
