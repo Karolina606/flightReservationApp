@@ -1,7 +1,9 @@
 package com;
 
+import com.client.views.EmployeeView;
 import com.client.views.FlightView;
 import com.client.views.PersonalDataView;
+import com.model.Employee;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,7 +39,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         final boolean publicView =
                 PersonalDataView.class.equals(securedClass)
                         // || LoginView.class.equals(securedClass)
-                        || FlightView.class.equals(securedClass);
+                        || FlightView.class.equals(securedClass)
+                        || EmployeeView.class.equals(securedClass);
 
         // Always allow access to public views
         if (publicView) {

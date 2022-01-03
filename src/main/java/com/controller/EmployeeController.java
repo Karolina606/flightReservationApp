@@ -99,8 +99,8 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Employee> deleteEmployee(@PathVariable ("id") long id){
         Employee foundEmployee = employeeRepo.findById(id).orElseThrow(() -> new NotFoundException("Employee not found, id=" + id));
-        employeeRepo.delete(foundEmployee);
-
+        //employeeRepo.deleteById(foundEmployee.getId());
+        employeeRepo.deleteByEmployeeId(id);
         return ResponseEntity.ok().build();
     }
 

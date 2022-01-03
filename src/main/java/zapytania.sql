@@ -101,4 +101,4 @@ UPDATE user SET role = 0 WHERE  role = 1;
 UPDATE user SET role = 1 WHERE  role = 2;
 UPDATE user SET role = 2 WHERE  role = 3;
 
-DELETE FROM employee WHERE employee.id = 41;
+DELETE FROM employee WHERE employee.id = 43;

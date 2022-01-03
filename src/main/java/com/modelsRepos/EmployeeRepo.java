@@ -1,15 +1,19 @@
 package com.modelsRepos;
 
 import com.model.Employee;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 
 	@Query(value = "SELECT SUM(TIMESTAMPDIFF(HOUR, f.departure_date, f.arrival_date)) " +
@@ -57,4 +61,11 @@ public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 			"WHERE e.employee_role = :employeeRole",
 			nativeQuery = true)
 	List<Employee> getEmployeesWithRole(@Param("employeeRole") int employeeRole);
+
+
+	// ZUsuwa pracownika
+	@Modifying
+	@Query(value = "DELETE FROM employee WHERE employee.id = :employeeId",
+			nativeQuery = true)
+	void deleteByEmployeeId(@Param("employeeId") Long employeeId);
 }
