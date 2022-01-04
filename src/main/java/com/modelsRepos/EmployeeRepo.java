@@ -22,9 +22,9 @@ public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 			"INNER JOIN flight f on fc.flights_id = f.id " +
 			"WHERE e.id = :employeeId " +
 			"AND YEAR(f.departure_date) = YEAR(:date) " +
-			"AND MONTH(f.departure_date) = YEAR(:date)",
+			"AND MONTH(f.departure_date) = MONTH(:date)",
 			nativeQuery = true)
-	Integer getWorkedHoursInMonth(@Param("employeeId") Long employeeId,
+	Long getWorkedHoursInMonth(@Param("employeeId") Long employeeId,
 								  @Param("date") LocalDateTime date);
 
 	// Ilu pilotów już zapisanych do lotu

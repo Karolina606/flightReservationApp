@@ -63,6 +63,7 @@ public class EmployeeController {
             return null;
         }
 
+
         // Jeśli warunki spełnione
         if (ifEmployeeHasLeftHoursInMonth(employee, flightId)
                 && ifEmployeeRoleFreeSpotForFlight(employee, flightId)
@@ -70,8 +71,7 @@ public class EmployeeController {
             flight.getCrew().add(employee);
             flightRepo.save(flight);
             System.out.println("Już zapisuje");
-            return employee;
-            //return employeeRepo.save(employee);
+            return employeeRepo.save(employee);
         }
         return null;
     }
@@ -116,7 +116,12 @@ public class EmployeeController {
 
         // Zapisz godziny w tygodniu
         long flightDurationInHours = Math.round(ChronoUnit.MINUTES.between(flight.getDepartureDate(), flight.getArrivalDate()) / 60.0 );
-        long workedHoursInMonth = employeeRepo.getWorkedHoursInMonth(employee.getId(), flight.getDepartureDate());
+        Long workedHoursInMonth = employeeRepo.getWorkedHoursInMonth(employee.getId(), flight.getDepartureDate());
+
+        if (workedHoursInMonth == null){
+            workedHoursInMonth = 0L;
+        }
+
 
         if (employee.getEmpolyeeRole() == EmployeeEnum.PILOT && workedHoursInMonth + flightDurationInHours <= 80){
             return true;

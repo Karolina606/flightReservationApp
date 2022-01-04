@@ -29,8 +29,8 @@ public class EmployeeForm extends FormLayout {
     TextField employeeId = new TextField("Pracownik id");
 
     Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancle = new Button("Cancle");
+//    Button delete = new Button("Delete");
+//    Button cancle = new Button("Cancle");
 
     EmployeeView employeeViewParent;
     public EmployeeForm(EmployeeView employeeViewParent){
@@ -39,24 +39,24 @@ public class EmployeeForm extends FormLayout {
         salary.setRequired(true);
         role.setRequired(true);
         role.setItems(EmployeeEnum.values());
-        employeeId.setRequired(true);
+        //employeeId.setRequired(true);
 
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        delete.addClickListener(event -> deleteEmployee());
-        add(pesel, salary, role, createButtonLayout(), employeeId, delete);
+//        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+//        delete.addClickListener(event -> deleteEmployee());
+        add(pesel, salary, role, createButtonLayout());
     }
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         //delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        cancle.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        //cancle.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickShortcut(Key.ENTER);
-        cancle.addClickShortcut(Key.ESCAPE);
+        //cancle.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> addEmployee());
         //delete.addClickListener(event -> deleteEmployee());
-        return new HorizontalLayout(save, cancle);
+        return new HorizontalLayout(save);
     }
 
     private void deleteEmployee() {

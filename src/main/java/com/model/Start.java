@@ -42,12 +42,13 @@ public class Start {
 //        Employee employee = new Employee(person, EmployeeEnum.PILOT, BigDecimal.valueOf(Double.parseDouble("5000.99")));
 //
 //        Flight flight = flightRepo.findById(2L).get();
+//        Employee employee = employeeRepo.findById(4L).get();
 //
 //        flight.getCrew().add(employee);
 //
-//        addressRepo.save(address);
-//        personalDataRepo.save(person);
-//        employeeRepo.save(employee);
+////        addressRepo.save(address);
+////        personalDataRepo.save(person);
+//        //employeeRepo.save(employee);
 //        flightRepo.save(flight);
 
 

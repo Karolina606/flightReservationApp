@@ -102,3 +102,12 @@ UPDATE user SET role = 1 WHERE  role = 2;
 UPDATE user SET role = 2 WHERE  role = 3;
 
 DELETE FROM employee WHERE employee.id = 43;
+
+
+SELECT SUM(TIMESTAMPDIFF(HOUR, f.departure_date, f.arrival_date))
+			FROM employee e
+			INNER JOIN flight_crew fc ON fc.crew_id = e.id
+			INNER JOIN flight f on fc.flights_id = f.id
+			WHERE e.id = 2
+			AND YEAR(f.departure_date) = 2022
+			AND MONTH(f.departure_date) = 8;
