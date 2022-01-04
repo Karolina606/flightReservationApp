@@ -100,7 +100,7 @@ public class CrewView extends VerticalLayout {
 
     private void configureGrid() {
         grid.setSizeFull();
-        grid.setHeight("600px");
+        grid.setHeight("300px");
         grid.setColumns("id");
         grid.addColumn(Employee -> Employee.getPersonalData().getFirstName()).setHeader("FirstName");
         grid.addColumn(Employee -> Employee.getPersonalData().getLastName()).setHeader("LastName");

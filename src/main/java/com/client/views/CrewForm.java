@@ -62,7 +62,7 @@ public class CrewForm extends FormLayout {
 
         if (role.getValue() == EmployeeEnum.STEWARDESS){
             person.setItems(allStewardess);
-            person.setItemLabelGenerator(employee -> employee.getPersonalData().getFirstName() + " " + employee.getPersonalData().getFirstName());
+            person.setItemLabelGenerator(employee -> employee.getPersonalData().getFirstName() + " " + employee.getPersonalData().getLastName());
         }
     }
 

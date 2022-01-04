@@ -36,6 +36,7 @@ public class FlightView extends VerticalLayout {
         configureGrid();
         configureForm();
         crewView.setVisible(false);
+        crewView.setSizeFull();
 
         add(
                 getToolbar(),
