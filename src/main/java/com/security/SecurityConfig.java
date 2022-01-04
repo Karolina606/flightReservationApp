@@ -1,5 +1,8 @@
 package com.security;
 
+import com.client.views.EmployeeView;
+import com.client.views.FlightView;
+import com.client.views.PersonalDataView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,11 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @EnableWebSecurity
@@ -42,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
                 // Allow all requests by logged-in users.
-                .anyRequest().authenticated()
+                .antMatchers("/**").permitAll().anyRequest().authenticated()
 
                 // Configure the login page.
                 .and().formLogin()
@@ -52,11 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // Configure logout
                 .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
-
     }
 
     @Bean
-//    @Override
+    @Override
     public UserDetailsService userDetailsService() {
  /*       UserDetails user = User.withUsername("user")
                 .password("{noop}userpass")
@@ -69,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -109,5 +113,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // (development mode) H2 debugging console
                 "/h2-console/**");
+    }
+
+
+    public static boolean isAccessGranted(Class<?> securedClass) {
+        final boolean publicView =
+                PersonalDataView.class.equals(securedClass)
+                        // || LoginView.class.equals(securedClass)
+                        || FlightView.class.equals(securedClass)
+                        || EmployeeView.class.equals(securedClass);
+
+        // Always allow access to public views
+        if (publicView) {
+            return true;
+        }
+        return false;
     }
 }
