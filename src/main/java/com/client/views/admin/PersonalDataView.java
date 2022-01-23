@@ -1,11 +1,15 @@
-package com.client.views;
+package com.client.views.admin;
 
 //import com.controller.PersonalDataController;
 import com.client.PersonalDataRestClient;
+import com.client.views.PersonalDataForm;
 import com.controller.PersonalDataService;
 import com.model.PersonalData;
+import com.security.SecurityService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -22,13 +26,15 @@ public class PersonalDataView extends VerticalLayout {
     private PersonalDataService service;
     Grid<PersonalData> grid = new Grid<>(PersonalData.class);
     TextField filterText = new TextField();
-    //PersonalDataController controller = new PersonalDataController();
     PersonalDataForm form;
 
-    public PersonalDataView(PersonalDataService service){
-        this.service = service;
-        // Collection<PersonalData> personalData = controller.getPersonalData();
+    // Navigation
+    Button logoutBtn = new Button("Wyloguj");
+    Button employeesNavigateBtn = new Button("Pracownicy");
+    Button planesNavigateBtn = new Button("Samoloty");
+    Button flightsNavigateBtn = new Button("Loty");
 
+    public PersonalDataView(){
         add(new H2("Dane osobowe"));
 
         addClassName("personal-data-view");
@@ -66,6 +72,24 @@ public class PersonalDataView extends VerticalLayout {
         form.setVisible(false);
     }
 
+    private Component createNavigateButtonLayout() {
+        employeesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        planesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        flightsNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        logoutBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+        employeesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("employeesRestApi"));
+        planesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("planesRestApi"));
+        flightsNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("flightRestApi"));
+        logoutBtn.addClickListener(event -> logout());
+        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, logoutBtn);
+    }
+
+    public void logout(){
+        SecurityService ss = new SecurityService();
+        ss.logout();
+    }
+
     private Component getToolbar() {
         filterText.setPlaceholder("Nazwisko...");
         filterText.setClearButtonVisible(true);
@@ -74,7 +98,7 @@ public class PersonalDataView extends VerticalLayout {
 
         Button addPersonalDataBtn = new Button("Manage personal data");
         addPersonalDataBtn.addClickListener(event -> showHidePersonalDataManager());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPersonalDataBtn);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPersonalDataBtn, createNavigateButtonLayout());
         toolbar.addClassName("toolbar");
 
         return toolbar;

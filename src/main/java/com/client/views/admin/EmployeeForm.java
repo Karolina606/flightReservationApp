@@ -1,9 +1,7 @@
-package com.client.views;
+package com.client.views.admin;
 
-import com.client.AddressRestClient;
 import com.client.EmployeeRestClient;
 import com.client.PersonalDataRestClient;
-import com.model.Address;
 import com.model.EmployeeEnum;
 import com.model.Employee;
 import com.model.PersonalData;
@@ -12,14 +10,11 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class EmployeeForm extends FormLayout {
     TextField pesel = new TextField("Pesel");

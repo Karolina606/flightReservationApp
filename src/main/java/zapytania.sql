@@ -38,13 +38,13 @@ VALUES (12345678903, '1990-01-01', 'Vanessa', 'Lopez', 213456789, 3);
 
 
 
-INSERT INTO employee(empolyee_role, salary, pesel)
+INSERT INTO employee(employee_role, salary, pesel)
 VALUES (0, 10000.00, 12345678901);
 
-INSERT INTO employee(empolyee_role, salary, pesel)
+INSERT INTO employee(employee_role, salary, pesel)
 VALUES (1, 5000.00, 12345678902);
 
-INSERT INTO employee(empolyee_role, salary, pesel)
+INSERT INTO employee(employee_role, salary, pesel)
 VALUES (1, 4000.00, 12345678903);
 
 
@@ -111,3 +111,11 @@ SELECT SUM(TIMESTAMPDIFF(HOUR, f.departure_date, f.arrival_date))
 			WHERE e.id = 2
 			AND YEAR(f.departure_date) = 2022
 			AND MONTH(f.departure_date) = 8;
+
+
+###########################################################
+INSERT INTO plane_model(brand, model_name, number_of_flight_attendants, number_of_pilots, number_of_seats, tank_capacity)
+VALUES ('Awionetka', 2022, 0, 1, 1, 5940);
+
+INSERT INTO plane(airlines, inspection_date, model_id)
+VALUES ('Local', '2022-07-01', 6);

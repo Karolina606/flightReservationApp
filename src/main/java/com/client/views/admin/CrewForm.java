@@ -1,17 +1,12 @@
-package com.client.views;
+package com.client.views.admin;
 
 import com.client.EmployeeRestClient;
-import com.client.FlightRestClient;
 import com.model.*;
-import com.modelsRepos.EmployeeRepo;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -50,7 +45,7 @@ public class CrewForm extends FormLayout {
 //        flight.getCrew().add(newPerson);
 //        FlightRestClient.callUpdateFlightApi(flight);
 //        EmployeeRestClient.callUpdateEmployeeApi(newPerson);
-        System.out.println("Udalo sie dodac osobe do lotu");
+        //System.out.println("Udalo sie dodac osobe do lotu");
         parentCrewView.updateList();
     }
 

@@ -1,9 +1,11 @@
-package com.client.views;
+package com.client.views.admin;
 
 //import com.controller.EmployeeController;
 import com.client.EmployeeRestClient;
 import com.model.Employee;
+import com.security.SecurityService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -13,7 +15,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -27,6 +28,12 @@ public class EmployeeView extends VerticalLayout {
     TextField filterText = new TextField();
     //EmployeeController controller = new EmployeeController();
     EmployeeForm form;
+
+    // Navigation
+    Button logoutBtn = new Button("Wyloguj");
+    Button employeesNavigateBtn = new Button("Pracownicy");
+    Button planesNavigateBtn = new Button("Samoloty");
+    Button flightsNavigateBtn = new Button("Loty");
 
     public EmployeeView(){
         // Collection<Employee> Employee = controller.getEmployee();
@@ -71,6 +78,24 @@ public class EmployeeView extends VerticalLayout {
         form.setVisible(false);
     }
 
+    private Component createNavigateButtonLayout() {
+        employeesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        planesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        flightsNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        logoutBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
+        employeesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("employeesRestApi"));
+        planesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("planesRestApi"));
+        flightsNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("flightRestApi"));
+        logoutBtn.addClickListener(event -> logout());
+        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, logoutBtn);
+    }
+
+    public void logout(){
+        SecurityService ss = new SecurityService();
+        ss.logout();
+    }
+
     private Component getToolbar() {
         filterText.setPlaceholder("Nazwisko...");
         filterText.setClearButtonVisible(true);
@@ -79,7 +104,7 @@ public class EmployeeView extends VerticalLayout {
 
         Button addEmployeeBtn = new Button("Manage employee");
         addEmployeeBtn.addClickListener(event -> showHideEmployeeManager());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeBtn);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeBtn, createNavigateButtonLayout());
         toolbar.addClassName("toolbar");
 
         return toolbar;

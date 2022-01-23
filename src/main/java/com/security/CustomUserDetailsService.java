@@ -4,12 +4,17 @@ import com.controller.UserController;
 import com.model.User;
 import com.security.PreventBruteForce.LoginAttemptService;
 import com.vaadin.flow.component.notification.Notification;
+import netscape.security.Privilege;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 public class CustomUserDetailsService implements UserDetailsService
 {

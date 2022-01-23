@@ -1,4 +1,4 @@
-package com.client.views;
+package com.client.views.admin;
 
 import com.client.*;
 import com.model.*;
@@ -13,11 +13,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FlightForm extends FormLayout {
     TextField flightId = new TextField("Id lotu (do usuwania)");

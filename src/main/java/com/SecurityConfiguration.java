@@ -1,8 +1,8 @@
 //package com;
 //
-//import com.client.views.EmployeeView;
-//import com.client.views.FlightView;
-//import com.client.views.PersonalDataView;
+//import com.client.views.admin.EmployeeView;
+//import com.client.views.admin.FlightView;
+//import com.client.views.admin.PersonalDataView;
 //import com.model.Employee;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;

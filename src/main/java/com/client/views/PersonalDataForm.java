@@ -2,6 +2,7 @@ package com.client.views;
 
 import com.client.AddressRestClient;
 import com.client.PersonalDataRestClient;
+import com.client.views.admin.PersonalDataView;
 import com.controller.PersonalDataService;
 import com.model.Address;
 import com.model.PersonalData;
@@ -9,7 +10,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 public class PersonalDataForm extends FormLayout {
     TextField pesel = new TextField("Pesel");
 
-    DateTimePicker dateOfBirth  = new DateTimePicker("Data urodzenia");
+    DatePicker dateOfBirth  = new DatePicker("Data urodzenia");
     TextField firstName = new TextField("Imie");
     TextField lastName = new TextField("Nazwisko");
     TextField phoneNumber = new TextField("Numer telefonu");
@@ -83,12 +84,12 @@ public class PersonalDataForm extends FormLayout {
         Long newPhoneNumber = Long.parseLong(phoneNumber.getValue());
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newBirthDate = dateOfBirth.getValue().toLocalDate();
+        LocalDate newBirthDate = dateOfBirth.getValue();
 
         //Address address = service.findAddressById(1L);
 
         // if address already exists
-        Address newAddress = addressForm.createAddres();
+        Address newAddress = addressForm.createAddress();
         Address foundAddress = AddressRestClient.returnIfAddressInDataBase(newAddress);
         Address addressToSave;
         if ( foundAddress == null){

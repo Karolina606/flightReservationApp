@@ -1,22 +1,14 @@
-package com.client.views;
+package com.client.views.admin;
 
 //import com.controller.EmployeeController;
-import com.client.EmployeeRestClient;
 import com.client.FlightRestClient;
 import com.model.Employee;
 import com.model.Flight;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
@@ -57,6 +49,7 @@ public class CrewView extends VerticalLayout {
 
     public void updateList() {
         //grid.setItems(service.findAllData(filterText.getValue()));
+        flight = FlightRestClient.callGetFlightByIdApi(flight.getId());
         List<Employee> crew = flight.getCrew();
         if (crew != null){
             grid.setItems(crew);

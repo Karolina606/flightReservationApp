@@ -1,9 +1,11 @@
 package com.client;
 
+import com.model.Employee;
 import com.model.Reservation;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ public class ReservationRestClient {
 
     private static final String GET_ALL_RESERVATION_API = "http://localhost:8080/reservationRest";
     private static final String GET_RESERVATION_BY_ID_API = "http://localhost:8080/reservationRest/{id}";
+    private static final String GET_RESERVATION_BY_PESEL_API = "http://localhost:8080/reservationRest/getReservarionByPesel/{pesel}";
     private static final String CREATE_RESERVATION_API = "http://localhost:8080/reservationRest";
     private static final String CREATE_MULTIPLE_RESERVATIONS_API = "http://localhost:8080/reservationRest/createMultipleReservations";
     private static final String UPDATE_RESERVATION_API = "http://localhost:8080/reservationRest/{id}";
@@ -43,6 +46,40 @@ public class ReservationRestClient {
         Reservation reservation = restTemplate.getForObject(GET_RESERVATION_BY_ID_API, Reservation.class, param);
         System.out.println(reservation);
         return reservation;
+    }
+
+    public static List<Reservation> callGetReservationByPeselApi(Long pesel){
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+//        HttpEntity<?> entity = new HttpEntity<>(headers);
+//
+//        String urlTemplate = UriComponentsBuilder.fromHttpUrl(GET_RESERVATION_BY_PESEL_API)
+//                .queryParam("pesel", "{pesel}")
+//                .encode()
+//                .toUriString();
+//
+//        Map<String, Long> param = new HashMap<>();
+//        param.put("pesel", pesel);
+//
+//        //List<Reservation> reservations = (List<Reservation>) restTemplate.getForObject(GET_RESERVATION_BY_PESEL_API, Reservation.class, param);
+//        ResponseEntity<List<Reservation>> response = restTemplate.exchange(
+//                urlTemplate,
+//                HttpMethod.GET,
+//                entity,
+//                new ParameterizedTypeReference<List<Reservation>>() {},
+//                param
+//        );
+
+        Map<String, Long> param = new HashMap<>();
+        param.put("pesel", pesel);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+
+        ResponseEntity<List<Reservation>> result = restTemplate.exchange(GET_RESERVATION_BY_PESEL_API, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Reservation>>() {}, param);
+        return result.getBody();
     }
 
     public static void callCreateReservationApi(Reservation reservation){

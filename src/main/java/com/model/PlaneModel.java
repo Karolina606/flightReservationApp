@@ -105,6 +105,10 @@ public class PlaneModel {
         return id;
     }
 
+    public String toStringShort(){
+        return  id + " " + getBrand() + " " + getModelName();
+    }
+
     @Override
     public String toString() {
         return "PlaneModel{" +

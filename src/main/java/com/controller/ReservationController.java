@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,6 +38,20 @@ public class ReservationController {
     @GetMapping("/{id}")
     public Reservation getReservationById(@PathVariable long id) {
         return reservationRepo.findById(id).orElse(null);
+    }
+
+    // get reservations data by pesel
+    @GetMapping("/getReservarionByPesel/{pesel}")
+    public List<Reservation>  getReservationByPesel(@PathVariable long pesel) {
+        ArrayList<Reservation> reservations = (ArrayList<Reservation>) reservationRepo.findAll();
+        List<Reservation> reservationsOfUser = new ArrayList<>();
+
+        for (Reservation reser: reservations){
+            if (reser.getPersonalData().getPesel() == pesel){
+                reservationsOfUser.add(reser);
+            }
+        }
+        return reservationsOfUser;
     }
 
     // create reservation

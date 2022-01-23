@@ -30,13 +30,13 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
     Button registerBT = new Button("Register");
 
     UserController userController;
+    VerticalLayout registerForm;
 
 
     private LoginForm  loginForm = new LoginForm();
     public LoginView(UserController uController){
         userController = uController;
         addClassName("login-view");
-        setSizeFull();
         setAlignItems(Alignment.CENTER);
 //        setJustifyContentMode(JustifyContentMode.CENTER);
 
@@ -44,18 +44,31 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
 
         passwordField.setLabel("Password");
         passwordField.setHelperText("Hasło musi mieć przynajmniej 1 znak specjalny,1 dużą literę i jedną cyfrę i być długości 8 znaków");
-        passwordField.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\\$%\\^&\\*]).{8}.*$");
+        passwordField.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).{8}.*$");
         passwordField.setErrorMessage("Not a valid password");
+
+        registerForm = new VerticalLayout(new H1("Rejestracja"), login,passwordField,
+                createButtonLayout());
+        registerForm.setVisible(false);
+        registerForm.setWidth("312px");
+        registerForm.setAlignItems(Alignment.STRETCH);
+
+        Button showRegisterFormButton = new Button("Show register form");
+        showRegisterFormButton.addClickListener(event -> showRegisterForm());
 
         add(
                 new H1("Flight Reservation App"),
                 new H1("Logowanie"),
                 loginForm,
-                new H1("Rejestracja"),
-                login,passwordField,
-                createButtonLayout()
+                showRegisterFormButton,
+                registerForm
         );
     }
+
+    private void showRegisterForm() {
+        registerForm.setVisible(!registerForm.isVisible());
+    }
+
     private Component createButtonLayout() {
         registerBT.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
@@ -76,6 +89,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         if(!passwordField.isInvalid() && userController.getUserById(newLogin) == null) {
             userController.createUser(newUser);
             System.out.println("adding user");
+            passwordField.setHelperText("Zarejestrowano poprawnie, teraz możesz się zalogować.");
         }
     }
 

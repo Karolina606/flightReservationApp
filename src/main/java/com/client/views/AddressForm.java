@@ -3,6 +3,7 @@ package com.client.views;
 import com.client.AddressRestClient;
 import com.model.Address;
 import com.model.Address;
+import com.model.PersonalData;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -32,7 +33,16 @@ public class AddressForm extends FormLayout {
 //        addressViewParent.updateList();
     }
 
-    public Address createAddres(){
+    public void setAddress(PersonalData personalData){
+        country.setValue(personalData.getAddress().getCountry());
+        city.setValue(personalData.getAddress().getCity());
+        postcode.setValue(personalData.getAddress().getPostcode());
+        street.setValue(personalData.getAddress().getStreet());
+        buildingNr.setValue(Integer.toString(personalData.getAddress().getBuildingNr()));
+        apartmentNr.setValue(Integer.toString(personalData.getAddress().getApartmentNr()));
+    }
+
+    public Address createAddress(){
         String newCountry = country.getValue() ;
         String newCity = city.getValue();
         String newPostcode = postcode.getValue();

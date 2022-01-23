@@ -1,8 +1,8 @@
 package com.security;
 
-import com.client.views.EmployeeView;
-import com.client.views.FlightView;
-import com.client.views.PersonalDataView;
+import com.client.views.admin.EmployeeView;
+import com.client.views.admin.FlightView;
+import com.client.views.admin.PersonalDataView;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,10 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.servlet.http.HttpServletResponse;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @EnableWebSecurity
@@ -47,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // Allow all requests by logged-in users.
                 .antMatchers("/**").permitAll().anyRequest().authenticated()
+                //.antMatchers("/login", "/register","/home").permitAll()
+                //.antMatchers("/**").hasAnyAuthority("ADMIN")
+                //.antMatchers("/reservationRest", "/reservationRest/**").hasAnyAuthority( "PASSANGER")
 
                 // Configure the login page.
                 .and().formLogin()
@@ -61,10 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
- /*       UserDetails user = User.withUsername("user")
-                .password("{noop}userpass")
-                .roles("USER")
-                .build();*/
+//        UserDetails user = User.withUsername("user")
+//                .password("{noop}userpass")
+//                .roles("USER")
+//                .build();
 
         return new CustomUserDetailsService();
     }
