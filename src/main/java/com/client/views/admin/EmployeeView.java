@@ -34,6 +34,7 @@ public class EmployeeView extends VerticalLayout {
     Button employeesNavigateBtn = new Button("Pracownicy");
     Button planesNavigateBtn = new Button("Samoloty");
     Button flightsNavigateBtn = new Button("Loty");
+    Button personalDataBtn = new Button("Dane osobowe");
 
     public EmployeeView(){
         // Collection<Employee> Employee = controller.getEmployee();
@@ -82,13 +83,15 @@ public class EmployeeView extends VerticalLayout {
         employeesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         planesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         flightsNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        personalDataBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         logoutBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         employeesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("employeesRestApi"));
         planesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("planesRestApi"));
         flightsNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("flightRestApi"));
+        personalDataBtn.addClickListener(event -> UI.getCurrent().navigate("personalDataRestApi"));
         logoutBtn.addClickListener(event -> logout());
-        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, logoutBtn);
+        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, personalDataBtn, logoutBtn);
     }
 
     public void logout(){
@@ -102,7 +105,7 @@ public class EmployeeView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addEmployeeBtn = new Button("Manage employee");
+        Button addEmployeeBtn = new Button("Zarządzaj pracownikami");
         addEmployeeBtn.addClickListener(event -> showHideEmployeeManager());
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeBtn, createNavigateButtonLayout());
         toolbar.addClassName("toolbar");
@@ -124,7 +127,7 @@ public class EmployeeView extends VerticalLayout {
         grid.addColumn(Employee -> Employee.getPersonalData().getPhoneNumber()).setHeader("Phone");
 
         grid.addColumn(new ComponentRenderer<>(employee -> {
-                    Button deleteBtn = new Button("Delete");
+                    Button deleteBtn = new Button("Usuń");
                     deleteBtn.addClickListener(click -> {
                         EmployeeRestClient.callDeleteEmployeeApi(employee.getId());
                         updateList();
@@ -135,7 +138,7 @@ public class EmployeeView extends VerticalLayout {
                     editLayout.setWidth("100%");
                     return editLayout;
                 }))
-                .setHeader("Delete");
+                .setHeader("Usuń");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

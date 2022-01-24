@@ -35,6 +35,7 @@ public class PlaneView extends VerticalLayout {
     Button employeesNavigateBtn = new Button("Pracownicy");
     Button planesNavigateBtn = new Button("Samoloty");
     Button flightsNavigateBtn = new Button("Loty");
+    Button personalDataBtn = new Button("Dane osobowe");
 
     public PlaneView(){
         // Collection<Plane> Plane = controller.getPlane();
@@ -88,13 +89,15 @@ public class PlaneView extends VerticalLayout {
         employeesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         planesNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         flightsNavigateBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        personalDataBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         logoutBtn.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         employeesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("employeesRestApi"));
         planesNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("planesRestApi"));
         flightsNavigateBtn.addClickListener(event -> UI.getCurrent().navigate("flightRestApi"));
+        personalDataBtn.addClickListener(event -> UI.getCurrent().navigate("personalDataRestApi"));
         logoutBtn.addClickListener(event -> logout());
-        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, logoutBtn);
+        return new HorizontalLayout(employeesNavigateBtn, planesNavigateBtn, flightsNavigateBtn, personalDataBtn, logoutBtn);
     }
 
     public void logout(){
@@ -108,8 +111,8 @@ public class PlaneView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addPlaneBtn = new Button("Manage plane");
-        Button addPlaneModelBtn = new Button("Manage plane model");
+        Button addPlaneBtn = new Button("Zarządzaj samolotami");
+        Button addPlaneModelBtn = new Button("Zarządzaj modelami");
 
         addPlaneBtn.addClickListener(event -> showHidePlaneManager());
         addPlaneModelBtn.addClickListener(event -> showHidePlaneModelManager());
@@ -140,7 +143,7 @@ public class PlaneView extends VerticalLayout {
         grid.addColumn(Plane -> Plane.getModel().getTankCapacity()).setHeader("TankCapacity");
 
         grid.addColumn(new ComponentRenderer<>(plane -> {
-                    Button deleteBtn = new Button("Delete");
+                    Button deleteBtn = new Button("Usuń");
                     deleteBtn.addClickListener(click -> {
                         PlaneRestClient.callDeletePlaneApi(plane.getId());
                         updateList();

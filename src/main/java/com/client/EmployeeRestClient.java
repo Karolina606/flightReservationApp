@@ -60,32 +60,32 @@ public class EmployeeRestClient {
         return result.getBody();
     }
 
-    public static void callCreateEmployeeApi(Employee employee){
+    public static boolean callCreateEmployeeApi(Employee employee){
         ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(CREATE_EMPLOYEE_API, employee, Employee.class);
-        System.out.println("Dodano pracownika " + employeeResponse.getBody());
+
+        if(employeeResponse.getBody() == null){
+            return false;
+        }else{
+            System.out.println("Dodano pracownika " + employeeResponse.getBody());
+            return true;
+        }
     }
 
-    public static void callAddEmployeeToFlightCrew(Employee employee, Long flightId){
+    public static boolean callAddEmployeeToFlightCrew(Employee employee, Long flightId){
         Map<String, Long> param = new HashMap<>();
         param.put("flightId", flightId);
 
-//        restTemplate = new RestTemplate();
-//        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-//        mappingJackson2HttpMessageConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON, MediaType.APPLICATION_OCTET_STREAM));
-//        restTemplate.getMessageConverters().add(mappingJackson2HttpMessageConverter);
+        System.out.println(employee.toString());
+        System.out.println(flightId);
+        //restTemplate.put(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, param);
 
-            System.out.println(employee.toString());
-            System.out.println(flightId);
-            restTemplate.put(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, param);
-
-//        //ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
-//        ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
-
-//        if (employeeResponse.getBody() != null){
-//            System.out.println("Dodano pracownika do lotu.");
-//        }else{
-//            System.err.println("Nie dodano pracownika do lotu.");
-//        }
+        ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
+        if(employeeResponse.getBody() == null){
+            return false;
+        }else{
+            System.out.println("Dodano pracownika do lotu" + employeeResponse.getBody());
+            return true;
+        }
     }
 
     public static void callUpdateEmployeeApi(Employee employee){

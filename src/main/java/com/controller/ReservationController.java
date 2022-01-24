@@ -8,6 +8,7 @@ import com.vaadin.flow.router.NotFoundException;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -56,6 +57,7 @@ public class ReservationController {
 
     // create reservation
     @PostMapping
+    @Transactional
     public Reservation createReservation(@RequestBody Reservation reservation){
         // Osoba poniżej 16 roku życia nie może sama dokonać rezerwacji
         if (Period.between(reservation.getPersonalData().getDateOfBirth(), LocalDate.now()).getYears() < 16 ){
@@ -74,6 +76,7 @@ public class ReservationController {
 
     // create multiple reservations
     @PostMapping("/createMultipleReservations")
+    @Transactional
     public Boolean createMultipleReservations(@RequestBody List<Reservation> reservations){
         // czy wsrod rezerwacji jest osoba powyzej 16 roku zycia
         Boolean permissionToMakeReservations = false;

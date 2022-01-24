@@ -2,6 +2,7 @@ package com.controller;
 
 
 import com.model.Airport;
+import com.modelsRepos.AddressRepo;
 import com.modelsRepos.AirportRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ public class AirportController {
 
     @Autowired
     private AirportRepo airportRepo;
+    private AddressRepo addressRepo;
 
-    public AirportController(AirportRepo airportRepo) {
+    public AirportController(AirportRepo airportRepo, AddressRepo addressRepo) {
         this.airportRepo = airportRepo;
+        this.addressRepo = addressRepo;
     }
 
     // get all airport
@@ -36,6 +39,7 @@ public class AirportController {
     // create airport
     @PostMapping
     public Airport createAirport(@RequestBody Airport airport){
+        addressRepo.save(airport.getAddress());
         return airportRepo.save(airport);
     }
 

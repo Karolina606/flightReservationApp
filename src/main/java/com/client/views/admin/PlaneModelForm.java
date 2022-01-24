@@ -22,9 +22,9 @@ public class PlaneModelForm extends FormLayout {
 	TextField numberOfSeats = new TextField("Liczba miejsc");
 	TextField tankCapacity = new TextField("Pojemnosc baku");
 
-	Button save = new Button("Save");
-	Button delete = new Button("Delete");
-	Button cancle = new Button("Cancle");
+	Button save = new Button("Zapisz");
+	Button delete = new Button("Usuń");
+	Button cancle = new Button("Odrzuć");
 
 	public PlaneModelForm(PlaneView planeViewParent){
 		this.planeViewParent = planeViewParent;

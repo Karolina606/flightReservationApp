@@ -116,7 +116,7 @@ public class ReservationView extends VerticalLayout {
         grid.addColumn(reservation -> reservation.getFlight().getPlane().getModel().getModelName()).setHeader("Model");
 
         grid.addColumn(new ComponentRenderer<>(reservation -> {
-                    Button deleteBtn = new Button("Delete");
+                    Button deleteBtn = new Button("Usuń");
                     deleteBtn.addClickListener(click -> {
                         ReservationRestClient.callDeleteReservationApi(reservation.getId());
                         updateList();
@@ -127,7 +127,7 @@ public class ReservationView extends VerticalLayout {
                     editLayout.setWidth("100%");
                     return editLayout;
                 }))
-                .setHeader("Delete");
+                .setHeader("Usuń");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

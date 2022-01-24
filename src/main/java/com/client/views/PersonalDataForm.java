@@ -12,6 +12,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -26,27 +28,17 @@ public class PersonalDataForm extends FormLayout {
     TextField lastName = new TextField("Nazwisko");
     TextField phoneNumber = new TextField("Numer telefonu");
 
-    TextField country = new TextField("Kraj");
-    TextField city = new TextField("Miasto");
-    TextField postcoode = new TextField("Kod pocztowy");
-    TextField street = new TextField("Ulica");
-    TextField building_nr = new TextField("Numer budynku");
-    TextField apartment_nr = new TextField("Numer mieszkania");
-
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancle = new Button("Cancle");
 
-    //PersonalDataService PersonalDataService;
-
     PersonalDataView personalDataViewParent;
     AddressForm addressForm;
+    Notification notification;
 
-    public PersonalDataForm(PersonalDataService service, PersonalDataView personalDataViewParent){
-        //this.service = service;
+    public PersonalDataForm(PersonalDataView personalDataViewParent){
         this.personalDataViewParent = personalDataViewParent;
         addClassName("personal-data-form");
-
 
         pesel.setRequired(true);
         dateOfBirth.setRequiredIndicatorVisible(true);
@@ -78,36 +70,45 @@ public class PersonalDataForm extends FormLayout {
     }
 
     private void addPersonalData() {
-        Long newPesel = Long.parseLong(pesel.getValue());
-        String newFirstName = firstName.getValue();
-        String newLastName = lastName.getValue();
-        Long newPhoneNumber = Long.parseLong(phoneNumber.getValue());
+        try{
+            Long newPesel = Long.parseLong(pesel.getValue());
+            String newFirstName = firstName.getValue();
+            String newLastName = lastName.getValue();
+            Long newPhoneNumber = Long.parseLong(phoneNumber.getValue());
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newBirthDate = dateOfBirth.getValue();
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate newBirthDate = dateOfBirth.getValue();
 
-        //Address address = service.findAddressById(1L);
+            // if address already exists
+            Address newAddress = addressForm.createAddress();
+            Address foundAddress = AddressRestClient.returnIfAddressInDataBase(newAddress);
+            Address addressToSave;
+            if ( foundAddress == null){
+                addressToSave = newAddress;
+                AddressRestClient.callCreateAddressApi(addressToSave);
+            }else{
+                addressToSave = foundAddress;
+            }
 
-        // if address already exists
-        Address newAddress = addressForm.createAddress();
-        Address foundAddress = AddressRestClient.returnIfAddressInDataBase(newAddress);
-        Address addressToSave;
-        if ( foundAddress == null){
-            addressToSave = newAddress;
-            AddressRestClient.callCreateAddressApi(addressToSave);
-        }else{
-            addressToSave = foundAddress;
+            PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, addressToSave);
+
+            // Jeśli pesel już w bazie zmodyfikuj
+            if (PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel) != null){
+                PersonalDataRestClient.callUpdatePersonalDataApi(personalData);
+            }else{
+                if(PersonalDataRestClient.callCreatePersonalDataApi(personalData)){
+                    notification = Notification.show("Udało się dodać dane osobowe.");
+                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                }else{
+                    notification = Notification.show("Nie udało się dodać dane osobowe.");
+                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
+            }
+        }catch(Exception e){
+            notification = Notification.show("Nie udało się dodać dane osobowe.");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
 
-        PersonalData personalData = new PersonalData(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, addressToSave);
-
-        // Jeśli pesel już w bazie zmodyfikuj
-        if (PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel) != null){
-            PersonalDataRestClient.callUpdatePersonalDataApi(personalData);
-        }else{
-            PersonalDataRestClient.callCreatePersonalDataApi(personalData);
-            //service.savePersonalData(personalData);
-        }
         personalDataViewParent.updateList();
     }
 }

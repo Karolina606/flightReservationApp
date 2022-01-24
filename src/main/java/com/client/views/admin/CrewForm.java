@@ -5,6 +5,8 @@ import com.model.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -15,13 +17,14 @@ public class CrewForm extends FormLayout {
     ComboBox<EmployeeEnum> role = new ComboBox<>("Rola");
     ComboBox<Employee> person = new ComboBox<>("Osoba");
 
-    Button save = new Button("Save");
+    Button save = new Button("Zapisz");
 
     List<Employee> allPilots;
     List<Employee> allStewardess;
 
     private Flight flight;
     CrewView parentCrewView;
+    Notification notification;
 
     public CrewForm(CrewView parentCrewView){
         this.parentCrewView = parentCrewView;
@@ -41,7 +44,14 @@ public class CrewForm extends FormLayout {
     @Transactional
     public void savePersonToCrew() {
         Employee newPerson = person.getValue();
-        EmployeeRestClient.callAddEmployeeToFlightCrew(newPerson, flight.getId());
+        if(EmployeeRestClient.callAddEmployeeToFlightCrew(newPerson, flight.getId())){
+            notification = Notification.show("Udało się dodać obsługę do lotu.");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        }else{
+            notification = Notification.show("Nie udało się dokonać osoby do lotu. Albo za dużo godzin w miesiącu, albo nie ma miejsca w tym locie.");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+        ;
 //        flight.getCrew().add(newPerson);
 //        FlightRestClient.callUpdateFlightApi(flight);
 //        EmployeeRestClient.callUpdateEmployeeApi(newPerson);

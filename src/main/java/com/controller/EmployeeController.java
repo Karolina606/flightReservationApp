@@ -5,11 +5,14 @@ import com.model.Employee;
 import com.model.EmployeeEnum;
 import com.model.Flight;
 import com.model.PersonalData;
+import com.modelsRepos.AddressRepo;
 import com.modelsRepos.EmployeeRepo;
 import com.modelsRepos.FlightRepo;
+import com.modelsRepos.PersonalDataRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -24,10 +27,14 @@ public class EmployeeController {
     @Autowired
     private EmployeeRepo employeeRepo;
     private FlightRepo flightRepo;
+    private AddressRepo addressRepo;
+    private PersonalDataRepo personalDataRepo;
 
-    public EmployeeController(EmployeeRepo employeeRepo, FlightRepo flightRepo) {
+    public EmployeeController(EmployeeRepo employeeRepo, FlightRepo flightRepo, AddressRepo addressRepo, PersonalDataRepo personalDataRepo) {
         this.employeeRepo = employeeRepo;
         this.flightRepo = flightRepo;
+        this.addressRepo = addressRepo;
+        this.personalDataRepo = personalDataRepo;
     }
 
     // get all employee
@@ -49,7 +56,8 @@ public class EmployeeController {
     }
 
     // add employee to flight
-    @PutMapping("/addEmployeeToFlightCrew/{flightId}")
+    @PostMapping("/addEmployeeToFlightCrew/{flightId}")
+    @Transactional
     public Employee addEmployeeToFlightCrew(@RequestBody Employee employee, @PathVariable Long flightId){
         // doda członka załogi do lotu jeśli:
         // 1. Nie wylatał on jeszcze w tym miesiacu swoich godzin (100 - stewardessa, 80 - pilot)
@@ -78,7 +86,19 @@ public class EmployeeController {
 
     // create employee
     @PostMapping
+    @Transactional
     public Employee createEmployee(@RequestBody Employee employee){
+
+        if(!AddressController.validateAddress(employee.getPersonalData().getAddress())){
+            return null;
+        }
+        addressRepo.save(employee.getPersonalData().getAddress());
+
+        if(!PersonalDataController.validatePersonalData(employee.getPersonalData())){
+            return  null;
+        }
+        personalDataRepo.save(employee.getPersonalData());
+
         return employeeRepo.save(employee);
     }
 

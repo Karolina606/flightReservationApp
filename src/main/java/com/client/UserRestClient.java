@@ -46,7 +46,7 @@ public class UserRestClient {
 
     public static void callCreateUserApi(User user){
         ResponseEntity<User> userResponse = restTemplate.postForEntity(CREATE_USER_API, user, User.class);
-        System.out.println("Dodano nowy samolot" + userResponse.getBody());
+        System.out.println("Dodano nowego użutkownika" + userResponse.getBody());
     }
 
     public static void callUpdateUserApi(User user){

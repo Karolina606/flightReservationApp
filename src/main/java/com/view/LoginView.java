@@ -8,6 +8,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -90,6 +92,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
             userController.createUser(newUser);
             System.out.println("adding user");
             passwordField.setHelperText("Zarejestrowano poprawnie, teraz możesz się zalogować.");
+            Notification notification = Notification.show("Zarejestrowano poprawnie, teraz możesz się zalogować.");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
     }
 

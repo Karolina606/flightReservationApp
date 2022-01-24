@@ -66,30 +66,10 @@ public class CrewView extends VerticalLayout {
         return content;
     }
 
-//    private void configureForm() {
-//        form = new EmployeeForm(this);
-//        form.setWidth("25em");
-//        form.setVisible(false);
-//    }
-
-//    private Component getToolbar() {
-//        filterText.setPlaceholder("Nazwisko...");
-//        filterText.setClearButtonVisible(true);
-//        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-//        filterText.addValueChangeListener(e -> updateList());
-//
-//        Button addEmployeeBtn = new Button("Manage employee");
-//        addEmployeeBtn.addClickListener(event -> showHideEmployeeManager());
-//        HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeBtn);
-//        toolbar.addClassName("toolbar");
-//
-//        return toolbar;
-//    }
 
     private void showHideEmployeeManager() {
         form.setVisible(!form.isVisible());
     }
-
 
     private void configureGrid() {
         grid.setSizeFull();
@@ -100,19 +80,6 @@ public class CrewView extends VerticalLayout {
         grid.addColumn(Employee::getEmpolyeeRole).setHeader("EmployeeRole");
         grid.addColumn(Employee -> Employee.getPersonalData().getPhoneNumber()).setHeader("Phone");
 
-//        grid.addColumn(new ComponentRenderer<>(employee -> {
-//                    Button deleteBtn = new Button("Delete");
-//                    deleteBtn.addClickListener(click -> {
-//                        EmployeeRestClient.callDeleteEmployeeApi(employee.getId());
-//                        updateList();
-//                    });
-//                    deleteBtn.setWidth("100%");
-//
-//                    HorizontalLayout editLayout = new HorizontalLayout(deleteBtn);
-//                    editLayout.setWidth("100%");
-//                    return editLayout;
-//                }))
-//                .setHeader("Delete");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

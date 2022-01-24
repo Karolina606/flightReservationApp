@@ -27,11 +27,6 @@ public class AddressForm extends FormLayout {
         add(country, city, postcode, street, buildingNr, apartmentNr);
     }
 
-    private void deleteAddress() {
-//        Long addressId = Long.parseLong(addres.getValue());
-//        AddressRestClient.callDeleteAddressApi(AddressPesel);
-//        addressViewParent.updateList();
-    }
 
     public void setAddress(PersonalData personalData){
         country.setValue(personalData.getAddress().getCountry());
@@ -52,26 +47,4 @@ public class AddressForm extends FormLayout {
 
         return new Address(newCountry, newCity, newPostcode, newStreet, newBuildingNumber, newApartmentNumber);
     }
-
-//    private void addAddress() {
-//        Long newPesel = Long.parseLong(pesel.getValue());
-//        String newFirstName = firstName.getValue() ;
-//        String newLastName = lastName.getValue();
-//        Long newPhoneNumber = Long.parseLong(phoneNumber.getValue());
-//
-//        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate newBirthDate = LocalDate.parse(dateOfBirth.getValue(), df);
-//
-//        Address address = service.findAddressById(1L);
-//        Address address = new Address(newPesel, newFirstName, newLastName, newBirthDate, newPhoneNumber, address);
-//
-//        // Jeśli pesel już w bazie zmodyfikuj
-//        if (AddressRestClient.callGetAddressByIdApi(newPesel) != null){
-//            AddressRestClient.callUpdateAddressApi(address);
-//        }else{
-//            AddressRestClient.callCreateAddressApi(address);
-//            //service.saveAddress(address);
-//        }
-//        addressViewParent.updateList();
-//    }
 }

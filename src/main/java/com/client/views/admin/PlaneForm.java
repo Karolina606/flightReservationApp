@@ -25,9 +25,9 @@ public class PlaneForm extends FormLayout {
     ComboBox<PlaneModel> planeModel = new ComboBox<>("Model samolotu");
 
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancle = new Button("Cancle");
+    Button save = new Button("Zapisz");
+    Button delete = new Button("Usuń");
+    Button cancle = new Button("Odrzuć");
 
     PlaneView planeViewParent;
 

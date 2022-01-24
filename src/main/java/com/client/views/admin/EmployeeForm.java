@@ -11,6 +11,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -23,9 +25,8 @@ public class EmployeeForm extends FormLayout {
 
     TextField employeeId = new TextField("Pracownik id");
 
-    Button save = new Button("Save");
-//    Button delete = new Button("Delete");
-//    Button cancle = new Button("Cancle");
+    Button save = new Button("Zapisz");
+    Notification notification;
 
     EmployeeView employeeViewParent;
     public EmployeeForm(EmployeeView employeeViewParent){
@@ -34,23 +35,15 @@ public class EmployeeForm extends FormLayout {
         salary.setRequired(true);
         role.setRequired(true);
         role.setItems(EmployeeEnum.values());
-        //employeeId.setRequired(true);
-
-//        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-//        delete.addClickListener(event -> deleteEmployee());
         add(pesel, salary, role, createButtonLayout());
     }
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        //delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        //cancle.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickShortcut(Key.ENTER);
-        //cancle.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> addEmployee());
-        //delete.addClickListener(event -> deleteEmployee());
         return new HorizontalLayout(save);
     }
 
@@ -62,25 +55,36 @@ public class EmployeeForm extends FormLayout {
     }
 
     private void addEmployee() {
-        Long newPesel = Long.parseLong(pesel.getValue());
-        BigDecimal newSalary = BigDecimal.valueOf(Float.parseFloat(salary.getValue()));
-        EmployeeEnum newRole = role.getValue();
+        try{
+            Long newPesel = Long.parseLong(pesel.getValue());
+            BigDecimal newSalary = BigDecimal.valueOf(Float.parseFloat(salary.getValue()));
+            EmployeeEnum newRole = role.getValue();
 
-        PersonalData newPersonalData = PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel);
-        if(newPersonalData == null){
-            System.err.println("Nie ma danych personalnych z numerem pesel= " + newPesel);
-            return ;
+            PersonalData newPersonalData = PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel);
+            if(newPersonalData == null){
+                System.err.println("Nie ma danych personalnych z numerem pesel= " + newPesel);
+                return ;
+            }
+
+            Employee employee = new Employee(newPersonalData, newRole, newSalary);
+
+            // Jeśli pesel już w bazie zmodyfikuj
+            if (EmployeeRestClient.callGetEmployeeByIdApi(newPesel) != null){
+                EmployeeRestClient.callUpdateEmployeeApi(employee);
+            }else{
+                if (EmployeeRestClient.callCreateEmployeeApi(employee) ){
+                    notification = Notification.show("Udało się dodać pracownika.");
+                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                }else{
+                    notification = Notification.show("Nie udało się dodać pracownika. Sprawdź poprawność danych.");
+                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                }
+            }
+        }catch(Exception e){
+            notification = Notification.show("Nie udało się dodać pracownika, sprawdź poprawność danych.");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
 
-        Employee employee = new Employee(newPersonalData, newRole, newSalary);
-
-        // Jeśli pesel już w bazie zmodyfikuj
-        if (EmployeeRestClient.callGetEmployeeByIdApi(newPesel) != null){
-            EmployeeRestClient.callUpdateEmployeeApi(employee);
-        }else{
-            EmployeeRestClient.callCreateEmployeeApi(employee);
-            //service.saveEmployee(employee);
-        }
         employeeViewParent.updateList();
     }
 }

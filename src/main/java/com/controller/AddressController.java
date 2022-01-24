@@ -36,6 +36,9 @@ public class AddressController {
     // create address
     @PostMapping
     public Address createAddress(@RequestBody Address address){
+        if(!validateAddress(address)){
+            return null;
+        }
         return addressRepo.save(address);
     }
 
@@ -86,5 +89,19 @@ public class AddressController {
         }else{
             return foundAddresses.get(0);
         }
+    }
+
+    public static boolean validateAddress(Address address){
+        // Sprawdzenie adresu
+        if(address.getCity().isEmpty() || address.getCity().matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
+            return false;
+        }else if (address.getStreet().isEmpty() || address.getStreet().matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
+            return false;
+        }else if(address.getCountry().isEmpty() || address.getCountry().matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
+            return false;
+        }else if(address.getPostcode().isEmpty() || !address.getPostcode().matches("[0-9]{2}-[0-9]{3}")){
+            return false;
+        }
+        return true;
     }
 }

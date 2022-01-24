@@ -40,9 +40,16 @@ public class PersonalDataRestClient {
         return personalData;
     }
 
-    public static void callCreatePersonalDataApi(PersonalData personalData){
+    public static boolean callCreatePersonalDataApi(PersonalData personalData){
         ResponseEntity<PersonalData> personaDataResponse = restTemplate.postForEntity(CREATE_PERSONAL_DATA_API, personalData, PersonalData.class);
-        System.out.println("Dodano dane osobowe " + personaDataResponse.getBody());
+
+        if(personaDataResponse.getBody() == null){
+            return false;
+        }
+        else{
+            System.out.println("Dodano dane osobowe " + personaDataResponse.getBody());
+            return true;
+        }
     }
 
     public static void callUpdatePersonalDataApi(PersonalData personalData){
