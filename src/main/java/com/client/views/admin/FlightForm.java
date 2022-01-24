@@ -9,6 +9,8 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -31,6 +33,7 @@ public class FlightForm extends FormLayout {
     Button save = new Button("Zapisz");
     Button delete = new Button("Usuń");
     Button cancle = new Button("Odrzuć");
+    Notification notification;
 
     FlightView flightViewParent;
 
@@ -70,18 +73,26 @@ public class FlightForm extends FormLayout {
     }
 
     private void addFlight() {
-        BigDecimal newPrice = BigDecimal.valueOf(Float.parseFloat(price.getValue()));
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss");
-        LocalDateTime newDepartureDate = departureDate.getValue();
-        LocalDateTime newArrivalDate = arrivalDate.getValue();
+        try{
+            BigDecimal newPrice = BigDecimal.valueOf(Float.parseFloat(price.getValue()));
 
-        Plane newPlane = plane.getValue();
-        Airport newDepartureAirport = departureAirport.getValue();
-        Airport newArrivalAirport = arrivalAirport.getValue();
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss");
+            LocalDateTime newDepartureDate = departureDate.getValue();
+            LocalDateTime newArrivalDate = arrivalDate.getValue();
 
-        Flight flight = new Flight(newDepartureAirport, newArrivalAirport, newDepartureDate, newArrivalDate, newPlane, newPrice);
-        FlightRestClient.callCreateFlightApi(flight);
+            Plane newPlane = plane.getValue();
+            Airport newDepartureAirport = departureAirport.getValue();
+            Airport newArrivalAirport = arrivalAirport.getValue();
+
+            Flight flight = new Flight(newDepartureAirport, newArrivalAirport, newDepartureDate, newArrivalDate, newPlane, newPrice);
+            FlightRestClient.callCreateFlightApi(flight);
+
+        }catch(Exception e){
+            notification = Notification.show("Nie udało się dodać lotu, sprawdź poprawność danych.");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+
 
         flightViewParent.updateList();
     }

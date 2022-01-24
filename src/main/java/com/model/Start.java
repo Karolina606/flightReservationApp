@@ -1,5 +1,6 @@
 package com.model;
 
+import com.controller.FlightController;
 import com.controller.ReservationController;
 import com.modelsRepos.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,10 @@ public class Start {
 //        Reservation reservation3 = new Reservation(flight, person3);
 //        resController.createReservation(reservation3);
 
+//        FlightController controller = new FlightController(flightRepo, planeRepo);
+//        controller.deleteOldFlights();
 
+        flightRepo.deleteOldFlights();
         System.out.println("Działam jak coś");
     }
 }

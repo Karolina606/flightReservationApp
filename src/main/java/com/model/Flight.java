@@ -138,4 +138,19 @@ public class Flight {
     public void setCrew(List<Employee> crew) {
         this.crew = crew;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", departurePlace=" + departurePlace +
+                ", arrivalPlace=" + arrivalPlace +
+                ", departureDate=" + departureDate +
+                ", arrivalDate=" + arrivalDate +
+                ", price=" + price +
+                ", plane=" + plane +
+                ", reservations=" + reservations +
+                ", crew=" + crew +
+                '}';
+    }
 }
