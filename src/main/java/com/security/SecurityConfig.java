@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String LOGIN_SUCCESS_URL = "/home";
     private static final String LOGIN_PROCESSING_URL = "/login";
     private static final String LOGIN_FAILURE_URL = "/login?error";
     private static final String LOGIN_URL = "/login";
@@ -42,15 +43,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
                 // Allow all requests by logged-in users.
-                .antMatchers("/**").permitAll().anyRequest().authenticated()
-                //.antMatchers("/login", "/register","/home").permitAll()
-                //.antMatchers("/**").hasAnyAuthority("ADMIN")
-                //.antMatchers("/reservationRest", "/reservationRest/**").hasAnyAuthority( "PASSANGER")
+               // .antMatchers("/**").permitAll().anyRequest().authenticated()
+
+                .antMatchers("/login").permitAll()
+                .antMatchers("/flightForUserRestApi","/flightForUserRestApi/**", "/reservationRestApi","/reservationRestApi/**").hasAuthority("PASSENGER")
+                .antMatchers("/home").hasAnyAuthority("PASSENGER","ADMIN")
+                .antMatchers("/employeesRestApi","employeesRestApi/**","/flightRestApi","/flightRestApi/**","/personalDataRestApi","/personalDataRestApi/**","/planesRestApi","/planesRestApi/**").hasAuthority("ADMIN")
+               // .anyRequest().hasAuthority("ADMIN")
 
                 // Configure the login page.
                 .and().formLogin()
                 .loginPage(LOGIN_URL).permitAll()
                 .loginProcessingUrl(LOGIN_PROCESSING_URL)
+                .defaultSuccessUrl(LOGIN_SUCCESS_URL)
+                .successForwardUrl(LOGIN_SUCCESS_URL)
                 .failureUrl(LOGIN_FAILURE_URL)
 
                 // Configure logout
