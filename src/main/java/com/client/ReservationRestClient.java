@@ -2,6 +2,8 @@ package com.client;
 
 import com.model.Employee;
 import com.model.Reservation;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -84,21 +86,32 @@ public class ReservationRestClient {
 
     public static void callCreateReservationApi(Reservation reservation){
         ResponseEntity<Reservation> reservationResponse = restTemplate.postForEntity(CREATE_RESERVATION_API, reservation, Reservation.class);
+        Notification notification;
 
         if (reservationResponse.getBody() != null){
             System.out.println("Dodano nową rezerwację" + reservationResponse.getBody());
+            notification = Notification.show("Udało się dokonać rezerwacji.");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
         }else{
             System.out.println("Niestety nie ma już miejsc na ten lot lub osoba jest za mloda");
+            notification = Notification.show("Nie udało się dokonać rezerwacji, nie ma już miejsc na ten lot lub osoba jest za mloda");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 
     public static void callCreateMultipleReservationsApi(List<Reservation> reservations){
         ResponseEntity<Boolean> reservationsResponse = restTemplate.postForEntity(CREATE_MULTIPLE_RESERVATIONS_API, reservations, Boolean.class);
+        Notification notification;
 
         if (Boolean.TRUE.equals(reservationsResponse.getBody())){
             System.out.println("Dodano nowe rezerwacje" + reservationsResponse.getBody());
+            notification = Notification.show("Udało się dokonać rezerwacji.");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }else{
             System.out.println("Niestety nie ma już miejsc na ten lot lub nie ma osoby doroslej wsrod rezerwacji");
+            notification = Notification.show("Nie udało się dokonać rezerwacji, nie ma już miejsc na ten lot lub nie ma osoby doroslej wsrod rezerwacji");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 
