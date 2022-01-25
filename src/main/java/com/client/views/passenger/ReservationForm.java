@@ -132,9 +132,6 @@ public class ReservationForm extends FormLayout {
 
                         Reservation newReservation = new Reservation(currentFlight, personalData);
                         ReservationRestClient.callCreateReservationApi(newReservation);
-
-                        notification = Notification.show("Udało się dokonać rezerwacj.");
-                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                     }
                 }catch(Exception e){
                     notification = Notification.show("Nie udało się dokonać rezerwacji. Sprawdź poprawność danych.");
@@ -192,9 +189,6 @@ public class ReservationForm extends FormLayout {
                     Reservation newReservation = new Reservation(currentFlight, personalData);
                     ReservationRestClient.callCreateReservationApi(newReservation);
 
-                    notification = Notification.show("Udało się dokonać rezerwacj.");
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-
                 } catch(Exception e){
                     notification = Notification.show("Nie udało się dokonać rezerwacji. Sprawdź poprawność danych.");
                     notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
@@ -205,9 +199,6 @@ public class ReservationForm extends FormLayout {
             else {
                 Reservation newReservation = new Reservation(currentFlight, personalData);
                 ReservationRestClient.callCreateReservationApi(newReservation);
-
-                notification = Notification.show("Udało się dokonać rezerwacj.");
-                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             }
         }
 
