@@ -27,9 +27,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
     //Rejestracja
     TextField login = new TextField("Login");
     PasswordField passwordField = new PasswordField("Hasło");
+    TextField adminCode = new TextField("Kod weryfikacji");
     //role == PASSENGER
 
     Button registerBT = new Button("Register");
+    Button showAdminVerificationButton = new Button("Admin verification");
 
     UserController userController;
     VerticalLayout registerForm;
@@ -49,11 +51,13 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         passwordField.setPattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).{8}.*$");
         passwordField.setErrorMessage("Not a valid password");
 
-        registerForm = new VerticalLayout(new H1("Rejestracja"), login,passwordField,
+        registerForm = new VerticalLayout(new H1("Rejestracja"), login,passwordField,adminCode,
                 createButtonLayout());
         registerForm.setVisible(false);
         registerForm.setWidth("312px");
         registerForm.setAlignItems(Alignment.STRETCH);
+
+        adminCode.setVisible(false);
 
         Button showRegisterFormButton = new Button("Show register form");
         showRegisterFormButton.addClickListener(event -> showRegisterForm());
@@ -71,30 +75,52 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
         registerForm.setVisible(!registerForm.isVisible());
     }
 
+    private void showAdminCode() {
+        adminCode.setVisible(!adminCode.isVisible());
+    }
+
     private Component createButtonLayout() {
         registerBT.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
         registerBT.addClickListener(event -> addUser());
-        return new HorizontalLayout(registerBT);
+        showAdminVerificationButton.addClickListener(e -> showAdminCode());
+
+        return new HorizontalLayout(registerBT, showAdminVerificationButton);
     }
+
 
     private void addUser(){
         //user
         String newLogin = login.getValue();
         String newPassword = passwordField.getValue();
+        String newCode = adminCode.getValue();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(newPassword);
         UserRole role = UserRole.PASSENGER;
 
+        String helperTxt  = "Zarejestrowano poprawnie, teraz możesz się zalogować.";
+
         User newUser = new User(newLogin,encodedPassword,null,role);
 
         if(!passwordField.isInvalid() && userController.getUserById(newLogin) == null) {
+            Notification notification;
+
+            if(newCode.equals("c9MPsue8")) {    //default admin registration key
+                newUser.setRole(UserRole.ADMIN);
+                helperTxt = "Zarejestrowano poprawnie, rola administrator, teraz możesz się zalogować.";
+            }
+            else if(!newCode.isEmpty()) {
+                notification = Notification.show("Nieprawidłowy kod weryfikacyjny.");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                return;
+            }
+
             userController.createUser(newUser);
             System.out.println("adding user");
-            passwordField.setHelperText("Zarejestrowano poprawnie, teraz możesz się zalogować.");
-            Notification notification = Notification.show("Zarejestrowano poprawnie, teraz możesz się zalogować.");
+            passwordField.setHelperText(helperTxt);
+            notification = Notification.show(helperTxt);
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         }
+
     }
 
     @Override
