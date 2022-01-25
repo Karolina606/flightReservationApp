@@ -133,7 +133,7 @@ public class FlightView extends VerticalLayout {
                     editLayout.setWidth("100%");
                     return editLayout;
                 }))
-                .setHeader("Show crew");
+                .setHeader("Reserve");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
