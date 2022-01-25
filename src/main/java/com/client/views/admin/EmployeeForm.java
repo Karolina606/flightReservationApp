@@ -86,7 +86,6 @@ public class EmployeeForm extends FormLayout {
         }catch(Exception e){
             notification = Notification.show("Nie udało się dodać pracownika, sprawdź poprawność danych.");
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            System.out.println("show");
         }
 
         employeeViewParent.updateList();

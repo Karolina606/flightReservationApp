@@ -154,7 +154,7 @@ public class PlaneView extends VerticalLayout {
                     editLayout.setWidth("100%");
                     return editLayout;
                 }))
-                .setHeader("Delete");
+                .setHeader("Usuń");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

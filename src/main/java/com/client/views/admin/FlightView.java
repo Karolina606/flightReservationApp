@@ -102,7 +102,7 @@ public class FlightView extends VerticalLayout {
         Button addFlightBtn = new Button("Zarządzaj lotami");
         addFlightBtn.addClickListener(event -> showHideFlightManager());
 
-        Button showCrewBtn = new Button("Show crew");
+        Button showCrewBtn = new Button("Pokaż załogę");
         showCrewBtn.addClickListener(event -> showHideCrewManager());
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addFlightBtn, showCrewBtn, createNavigateButtonLayout());
         toolbar.addClassName("toolbar");
@@ -136,7 +136,7 @@ public class FlightView extends VerticalLayout {
         grid.addColumn(flight -> flight.getPlane().getAirlines()).setHeader("Airlines");
 
         grid.addColumn(new ComponentRenderer<>(flight -> {
-                    Button showCrewBtn = new Button("Show crew");
+                    Button showCrewBtn = new Button("Pokaż załogę");
                     showCrewBtn.addClickListener(click -> {
                         crewView.setFlight(flight);
                         crewView.setVisible(true);
@@ -147,7 +147,7 @@ public class FlightView extends VerticalLayout {
                     editLayout.setWidth("100%");
                     return editLayout;
                 }))
-                .setHeader("Show crew");
+                .setHeader("Pokaż załogę");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

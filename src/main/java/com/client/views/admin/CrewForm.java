@@ -47,15 +47,10 @@ public class CrewForm extends FormLayout {
         if(EmployeeRestClient.callAddEmployeeToFlightCrew(newPerson, flight.getId())){
             notification = Notification.show("Udało się dodać obsługę do lotu.");
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        }else{
+        }else {
             notification = Notification.show("Nie udało się dokonać osoby do lotu. Albo za dużo godzin w miesiącu, albo nie ma miejsca w tym locie.");
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-        ;
-//        flight.getCrew().add(newPerson);
-//        FlightRestClient.callUpdateFlightApi(flight);
-//        EmployeeRestClient.callUpdateEmployeeApi(newPerson);
-        //System.out.println("Udalo sie dodac osobe do lotu");
         parentCrewView.updateList();
     }
 

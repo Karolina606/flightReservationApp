@@ -25,6 +25,9 @@ import com.vaadin.flow.router.Route;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @PageTitle("Rezerwacje")
 @Route(value = "reservationRestApi")
 public class ReservationView extends VerticalLayout {
@@ -63,7 +66,11 @@ public class ReservationView extends VerticalLayout {
     }
 
     public void updateList() {
-        grid.setItems(ReservationRestClient.callGetReservationByPeselApi(personalData.getPesel()));
+        List<Reservation> reservationList = new ArrayList<Reservation>();
+        if (personalData != null){
+            reservationList = ReservationRestClient.callGetReservationByPeselApi(personalData.getPesel());
+        }
+        grid.setItems(reservationList);
     }
 
     private Component getContent() {

@@ -122,7 +122,7 @@ public class FlightView extends VerticalLayout {
         grid.addColumn(flight -> flight.getPlane().getAirlines()).setHeader("Airlines");
 
         grid.addColumn(new ComponentRenderer<>(flight -> {
-                    Button reserveBtn = new Button("Reserve");
+                    Button reserveBtn = new Button("Zarezerwuj");
                     reserveBtn.addClickListener(click -> {
                         form.setCurrentFlight(flight);
                         form.setVisible(true);
