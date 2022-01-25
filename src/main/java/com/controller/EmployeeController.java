@@ -92,12 +92,10 @@ public class EmployeeController {
         if(!AddressController.validateAddress(employee.getPersonalData().getAddress())){
             return null;
         }
-        addressRepo.save(employee.getPersonalData().getAddress());
 
         if(!PersonalDataController.validatePersonalData(employee.getPersonalData())){
-            return  null;
+            return null;
         }
-        personalDataRepo.save(employee.getPersonalData());
 
         return employeeRepo.save(employee);
     }

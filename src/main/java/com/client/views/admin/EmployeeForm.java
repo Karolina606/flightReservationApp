@@ -63,6 +63,8 @@ public class EmployeeForm extends FormLayout {
             PersonalData newPersonalData = PersonalDataRestClient.callGetPersonalDataByIdApi(newPesel);
             if(newPersonalData == null){
                 System.err.println("Nie ma danych personalnych z numerem pesel= " + newPesel);
+                notification = Notification.show("Nie udało się dodać pracownika. Sprawdź poprawność danych.");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
                 return ;
             }
 
@@ -78,11 +80,13 @@ public class EmployeeForm extends FormLayout {
                 }else{
                     notification = Notification.show("Nie udało się dodać pracownika. Sprawdź poprawność danych.");
                     notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+
                 }
             }
         }catch(Exception e){
             notification = Notification.show("Nie udało się dodać pracownika, sprawdź poprawność danych.");
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            System.out.println("show");
         }
 
         employeeViewParent.updateList();

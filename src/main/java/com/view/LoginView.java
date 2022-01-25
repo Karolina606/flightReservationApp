@@ -101,6 +101,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterListener {
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if(beforeEnterEvent.getLocation().getQueryParameters().getParameters().containsKey("error")){
             loginForm.setError(true);
+            Notification notification = Notification.show("Nie udało się zalogować.");
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
 
     }
