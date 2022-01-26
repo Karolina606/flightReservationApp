@@ -9,19 +9,22 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class PlaneForm extends FormLayout {
     TextField planeId = new TextField("Id samolotu (do usuwania)");
     TextField airlines = new TextField("Linie lotnicze");
 
-    DateTimePicker inspectionDate = new DateTimePicker("Data przeglądu");
+    DatePicker inspectionDate = new DatePicker("Data przeglądu");
     ComboBox<PlaneModel> planeModel = new ComboBox<>("Model samolotu");
 
 
@@ -63,12 +66,12 @@ public class PlaneForm extends FormLayout {
     private void addPlane() {
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime newInspectionDate = inspectionDate.getValue();
+        LocalDate newInspectionDate = inspectionDate.getValue();
 
         String newAirlines = airlines.getValue();
         PlaneModel newPlaneModel = planeModel.getValue();
 
-        Plane newPlane = new Plane(newPlaneModel, newAirlines, newInspectionDate.toLocalDate());
+        Plane newPlane = new Plane(newPlaneModel, newAirlines, newInspectionDate);
         PlaneRestClient.callCreatePlaneApi(newPlane);
 
         planeViewParent.updateList();
