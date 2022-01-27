@@ -114,7 +114,7 @@ public class ReservationView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("id");
         grid.addColumn(reservation -> reservation.getFlight().getDeparturePlace().getName()).setHeader("DeparturePlace");
-        grid.addColumn(reservation -> reservation.getFlight().getArrivalPlace().getName()).setHeader("DepartureArrival");
+        grid.addColumn(reservation -> reservation.getFlight().getArrivalPlace().getName()).setHeader("ArrivalPlace");
         grid.addColumn(reservation -> reservation.getFlight().getDepartureDate()).setHeader("DepartureDate");
         grid.addColumn(reservation -> reservation.getFlight().getArrivalDate()).setHeader("ArrivalDate");
         grid.addColumn(reservation -> reservation.getFlight().getPrice()).setHeader("Price");
