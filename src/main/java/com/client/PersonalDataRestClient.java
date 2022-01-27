@@ -1,5 +1,6 @@
 package com.client;
 
+import cn.licoy.encryptbody.annotation.decrypt.AESDecryptBody;
 import com.model.PersonalData;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;

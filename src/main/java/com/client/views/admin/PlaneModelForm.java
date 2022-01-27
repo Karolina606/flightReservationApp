@@ -42,7 +42,7 @@ public class PlaneModelForm extends FormLayout {
 
 		save.addClickListener(event -> addPlaneModel());
 		delete.addClickListener(event -> deletePlaneModel());
-		return new HorizontalLayout(save, delete, cancle);
+		return new HorizontalLayout(save, delete);
 	}
 
 	private void deletePlaneModel() {

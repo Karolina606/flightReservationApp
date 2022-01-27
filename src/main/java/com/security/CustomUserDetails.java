@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
@@ -32,6 +33,14 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return user.getLogin();
+    }
+
+    public boolean hasRole(String role){
+        if (role.equals(user.getRole().toString())){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

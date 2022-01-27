@@ -63,7 +63,7 @@ public class FlightForm extends FormLayout {
 
         save.addClickListener(event -> addFlight());
         delete.addClickListener(event -> deleteFlight());
-        return new HorizontalLayout(save, delete, cancle);
+        return new HorizontalLayout(save);
     }
 
     private void deleteFlight() {
@@ -87,6 +87,9 @@ public class FlightForm extends FormLayout {
 
             Flight flight = new Flight(newDepartureAirport, newArrivalAirport, newDepartureDate, newArrivalDate, newPlane, newPrice);
             FlightRestClient.callCreateFlightApi(flight);
+
+            notification = Notification.show("Udało się dodać lot.");
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
 
         }catch(Exception e){
             notification = Notification.show("Nie udało się dodać lotu, sprawdź poprawność danych.");

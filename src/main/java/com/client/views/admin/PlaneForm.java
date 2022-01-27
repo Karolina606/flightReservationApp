@@ -21,7 +21,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class PlaneForm extends FormLayout {
-    TextField planeId = new TextField("Id samolotu (do usuwania)");
+    TextField planeId = new TextField("Id samolotu (do modyfikacji)");
     TextField airlines = new TextField("Linie lotnicze");
 
     DatePicker inspectionDate = new DatePicker("Data przeglądu");
@@ -29,7 +29,7 @@ public class PlaneForm extends FormLayout {
 
 
     Button save = new Button("Zapisz");
-    Button delete = new Button("Usuń");
+    Button change = new Button("Zapisz datę przeglądu");
     Button cancle = new Button("Odrzuć");
 
     PlaneView planeViewParent;
@@ -46,20 +46,30 @@ public class PlaneForm extends FormLayout {
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        change.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         cancle.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickShortcut(Key.ENTER);
         cancle.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> addPlane());
-        delete.addClickListener(event -> deletePlane());
-        return new HorizontalLayout(save, delete, cancle);
+        change.addClickListener(event -> changeInspectionDate());
+        return new HorizontalLayout(save, change);
     }
 
     private void deletePlane() {
         Long PlaneId = Long.parseLong(planeId.getValue());
         PlaneRestClient.callDeletePlaneApi(PlaneId);
+        planeViewParent.updateList();
+    }
+
+    private void changeInspectionDate() {
+        Long PlaneId = Long.parseLong(planeId.getValue());
+        Plane plane = PlaneRestClient.callGetPlaneByIdApi(PlaneId);
+        LocalDate newInspectionDate = inspectionDate.getValue();
+        plane.setInspectionDate(newInspectionDate);
+        PlaneRestClient.callUpdatePlaneApi(plane);
+
         planeViewParent.updateList();
     }
 

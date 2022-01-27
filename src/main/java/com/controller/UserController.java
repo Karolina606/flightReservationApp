@@ -1,6 +1,7 @@
 package com.controller;
 
 
+import com.model.PersonalData;
 import com.model.User;
 import com.modelsRepos.UserRepo;
 import com.vaadin.flow.router.NotFoundException;
@@ -37,7 +38,14 @@ public class UserController {
     // create user
     @PostMapping
     public User createUser(@RequestBody User user){
-        return userRepo.save(user);
+        try{
+            if(validateUser(user) == false){
+                return null;
+            }
+            return userRepo.save(user);
+        } catch(Exception e){
+            return null;
+        }
     }
 
     // update user
@@ -59,6 +67,16 @@ public class UserController {
         userRepo.delete(foundUser);
 
         return ResponseEntity.ok().build();
+    }
+
+    public static boolean validateUser(User user){
+        // Sprawdzenie danych
+        if(user.getPasswordHash().isEmpty()){
+            return false;
+        }else if (user.getLogin().isEmpty()){
+            return false;
+        }
+        return true;
     }
 
 //    // ifUserInDatabase

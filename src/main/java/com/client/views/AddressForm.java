@@ -9,6 +9,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -22,6 +23,13 @@ public class AddressForm extends FormLayout {
     TextField street = new TextField("Ulica");
     TextField buildingNr = new TextField("Numer budynku");
     TextField apartmentNr = new TextField("Numer mieszkania");
+
+//    Input country = new Input();
+//    Input city = new Input();
+//    Input postcode = new Input();
+//    Input street = new Input();
+//    Input buildingNr = new Input();
+//    Input apartmentNr = new Input();
 
     public AddressForm(){
         add(country, city, postcode, street, buildingNr, apartmentNr);

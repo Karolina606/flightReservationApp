@@ -12,6 +12,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -21,8 +22,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class PersonalDataForm extends FormLayout {
-    TextField pesel = new TextField("Pesel");
+//    Input pesel = new Input();
+//    Input dateOfBirth  = new Input();
+//    Input firstName = new Input();
+//    Input lastName = new Input();
+//    Input phoneNumber = new Input();
 
+    TextField pesel = new TextField("Pesel");
     DatePicker dateOfBirth  = new DatePicker("Data urodzenia");
     TextField firstName = new TextField("Imie");
     TextField lastName = new TextField("Nazwisko");
@@ -41,6 +47,7 @@ public class PersonalDataForm extends FormLayout {
         addClassName("personal-data-form");
 
         pesel.setRequired(true);
+        pesel.setId("input1");
         dateOfBirth.setRequiredIndicatorVisible(true);
         firstName.setRequired(true);
         lastName.setRequired(true);

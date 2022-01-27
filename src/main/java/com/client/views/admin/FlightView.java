@@ -1,6 +1,7 @@
 package com.client.views.admin;
 
 //import com.controller.FlightController;
+import com.client.EmployeeRestClient;
 import com.client.FlightRestClient;
 import com.model.Flight;
 import com.security.SecurityService;
@@ -10,6 +11,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -33,6 +36,8 @@ public class FlightView extends VerticalLayout {
     Button planesNavigateBtn = new Button("Samoloty");
     Button flightsNavigateBtn = new Button("Loty");
     Button personalDataBtn = new Button("Dane osobowe");
+
+    Notification notification = new Notification();
 
     public FlightView(){
         add(new H2("Loty"));
@@ -148,6 +153,29 @@ public class FlightView extends VerticalLayout {
                     return editLayout;
                 }))
                 .setHeader("Pokaż załogę");
+
+        grid.addColumn(new ComponentRenderer<>(flight -> {
+                    Button deleteBtn = new Button("Usuń");
+                    deleteBtn.addClickListener(click -> {
+                        try{
+                            FlightRestClient.callDeleteFlightApi(flight.getId());
+                            System.out.println("ID lotu " + flight.getId());
+                            updateList();
+
+                            notification = Notification.show("Lot został usunięty.");
+                            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        }catch(Exception e){
+                            notification = Notification.show("Lot nie został usunięty.");
+                            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        }
+                    });
+                    deleteBtn.setWidth("100%");
+
+                    HorizontalLayout editLayout = new HorizontalLayout(deleteBtn);
+                    editLayout.setWidth("100%");
+                    return editLayout;
+                }))
+                .setHeader("Usuń");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }

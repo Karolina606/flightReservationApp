@@ -10,6 +10,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -35,6 +37,8 @@ public class EmployeeView extends VerticalLayout {
     Button planesNavigateBtn = new Button("Samoloty");
     Button flightsNavigateBtn = new Button("Loty");
     Button personalDataBtn = new Button("Dane osobowe");
+
+    Notification notification;
 
     public EmployeeView(){
         // Collection<Employee> Employee = controller.getEmployee();
@@ -129,8 +133,16 @@ public class EmployeeView extends VerticalLayout {
         grid.addColumn(new ComponentRenderer<>(employee -> {
                     Button deleteBtn = new Button("Usuń");
                     deleteBtn.addClickListener(click -> {
-                        EmployeeRestClient.callDeleteEmployeeApi(employee.getId());
-                        updateList();
+                        try{
+                            EmployeeRestClient.callDeleteEmployeeApi(employee.getId());
+                            updateList();
+
+                            notification = Notification.show("Pracownik został usunięty.");
+                            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        }catch (Exception e){
+                            notification = Notification.show("Pracownik nir został usunięty.");
+                            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                        }
                     });
                     deleteBtn.setWidth("100%");
 

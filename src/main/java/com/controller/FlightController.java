@@ -1,6 +1,7 @@
 package com.controller;
 
 
+import com.model.Employee;
 import com.model.Flight;
 import com.model.Plane;
 import com.modelsRepos.FlightRepo;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -58,12 +60,19 @@ public class FlightController {
 
             if(arrivalDate.isBefore(inspectionDate)){
                 System.out.println("Samolot bedzie mial wazny przeglad podczas lotu, mozna go dodac.");
+
+                if(flight.getPrice().compareTo(BigDecimal.valueOf(0)) != 1){
+                    System.err.println("Cena lotu musi być dodatnia.");
+                    return null;
+                }
+
                 return flightRepo.save(flight);
             }
             else{
                 System.err.println("Niestety data waznosci przegladu samolotu nie pozwala na dodanie go do lotu.");
                 return null;
             }
+
         }else{
             System.err.println("Nie ma samolotu o tym id, nie mozesz go przypisać do lotu, id= " + flight.getPlane().getId());
             return null;
@@ -101,8 +110,7 @@ public class FlightController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Flight> deleteFlight(@PathVariable ("id") long id){
         Flight foundFlight = flightRepo.findById(id).orElseThrow(() -> new NotFoundException("Flight not found, id=" + id));
-        flightRepo.delete(foundFlight);
-
+        flightRepo.deleteByFlightId(id);
         return ResponseEntity.ok().build();
     }
 

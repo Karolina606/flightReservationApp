@@ -23,4 +23,9 @@ public interface FlightRepo extends CrudRepository<Flight, Long> {
 	@Query(value = "DELETE FROM flight " +
 			"WHERE flight.arrival_date < SYSDATE()", nativeQuery = true)
 	void deleteOldFlights();
+
+	@Modifying
+	@Query(value = "DELETE FROM flight WHERE flight.id = :flightId",
+			nativeQuery = true)
+	void deleteByFlightId(@Param("flightId") Long flightId);
 }
