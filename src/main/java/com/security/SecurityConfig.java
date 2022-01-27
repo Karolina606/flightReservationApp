@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow all requests by logged-in users.
                // .antMatchers("/**").permitAll().anyRequest().authenticated()
 
-                .antMatchers("/login").permitAll()
-                .antMatchers("/flightForUserRestApi","/flightForUserRestApi/**", "/reservationRestApi","/reservationRestApi/**").hasAuthority("PASSENGER")
-                .antMatchers("/home").hasAnyAuthority("PASSENGER","ADMIN")
-                .antMatchers("/employeesRestApi","employeesRestApi/**","/flightRestApi","/flightRestApi/**","/personalDataRestApi","/personalDataRestApi/**","/planesRestApi","/planesRestApi/**").hasAuthority("ADMIN")
-               // .anyRequest().hasAuthority("ADMIN")
+               .antMatchers("/login").permitAll()
+               .antMatchers("/flightForUserRestApi","/reservationRestApi").hasAuthority("PASSENGER")
+               .antMatchers("/home").hasAnyAuthority("PASSENGER","ADMIN")
+               .antMatchers("/employeesRestApi","employeesRestApi/**","/flightRestApi","/flightRestApi/**","/personalDataRestApi","/personalDataRestApi/**","/planesRestApi","/planesRestApi/**").hasAuthority("ADMIN")
+               .antMatchers("/reservationRest/getReservarionByPesel/**").denyAll()
 
                 // Configure the login page.
                 .and().formLogin()
