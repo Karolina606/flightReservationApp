@@ -66,7 +66,7 @@ public class ReservationView extends VerticalLayout {
     }
 
     public void updateList() {
-        List<Reservation> reservationList = new ArrayList<Reservation>();
+        List<Reservation> reservationList = new ArrayList<>();
         if (personalData != null){
             reservationList = ReservationRestClient.callGetReservationByPeselApi(personalData.getPesel());
         }

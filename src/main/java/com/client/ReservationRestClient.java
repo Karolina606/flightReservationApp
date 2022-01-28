@@ -18,7 +18,7 @@ public class ReservationRestClient {
 
     private static final String GET_ALL_RESERVATION_API = "http://localhost:8080/reservationRest";
     private static final String GET_RESERVATION_BY_ID_API = "http://localhost:8080/reservationRest/{id}";
-    private static final String GET_RESERVATION_BY_PESEL_API = "http://localhost:8080/reservationRest/getReservarionByPesel/{pesel}";
+    private static final String GET_RESERVATION_BY_PESEL_API = "http://localhost:8080/reservationRest/getReservationByPesel/{pesel}";
     private static final String CREATE_RESERVATION_API = "http://localhost:8080/reservationRest";
     private static final String CREATE_MULTIPLE_RESERVATIONS_API = "http://localhost:8080/reservationRest/createMultipleReservations";
     private static final String UPDATE_RESERVATION_API = "http://localhost:8080/reservationRest/{id}";

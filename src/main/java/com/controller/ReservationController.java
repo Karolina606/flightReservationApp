@@ -2,7 +2,9 @@ package com.controller;
 
 
 import com.model.Reservation;
+import com.modelsRepos.AddressRepo;
 import com.modelsRepos.FlightRepo;
+import com.modelsRepos.PersonalDataRepo;
 import com.modelsRepos.ReservationRepo;
 import com.vaadin.flow.router.NotFoundException;
 import org.apache.tomcat.jni.Local;
@@ -42,7 +44,7 @@ public class ReservationController {
     }
 
     // get reservations data by pesel
-    @GetMapping("/getReservarionByPesel/{pesel}")
+    @GetMapping("/getReservationByPesel/{pesel}")
     public List<Reservation>  getReservationByPesel(@PathVariable long pesel) {
         ArrayList<Reservation> reservations = (ArrayList<Reservation>) reservationRepo.findAll();
         List<Reservation> reservationsOfUser = new ArrayList<>();

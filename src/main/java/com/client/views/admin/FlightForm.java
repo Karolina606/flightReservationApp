@@ -76,7 +76,7 @@ public class FlightForm extends FormLayout {
                 notification = Notification.show("Udało się dodać lot.");
                 notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             }else{
-                notification = Notification.show("Nie udało się dodać lot.");
+                notification = Notification.show("Nie udało się dodać lot, sprawdź date przeglądu.");
                 notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
 
