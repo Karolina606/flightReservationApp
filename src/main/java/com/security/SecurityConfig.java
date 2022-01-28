@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                .antMatchers("/flightForUserRestApi","/reservationRestApi").hasAuthority("PASSENGER")
                .antMatchers("/home").hasAnyAuthority("PASSENGER","ADMIN")
                .antMatchers("/employeesRestApi","employeesRestApi/**","/flightRestApi","/flightRestApi/**","/personalDataRestApi","/personalDataRestApi/**","/planesRestApi","/planesRestApi/**").hasAuthority("ADMIN")
-               .antMatchers("/reservationRest/getReservarionByPesel/**","/personalDataRest").denyAll()
+               .antMatchers("/reservationRest/getReservarionByPesel/**").denyAll()
 
                 // Configure the login page.
                 .and().formLogin()
