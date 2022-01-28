@@ -54,6 +54,10 @@ public class AddressController {
         foundAddress.setBuildingNr(address.getBuildingNr());
         foundAddress.setApartmentNr(address.getApartmentNr());
 
+        if(!validateAddress(foundAddress)){
+            return null;
+        }
+
         return addressRepo.save(foundAddress);
     }
 

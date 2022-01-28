@@ -71,7 +71,6 @@ public class EmployeeController {
             return null;
         }
 
-
         // Jeśli warunki spełnione
         if (ifEmployeeHasLeftHoursInMonth(employee, flightId)
                 && ifEmployeeRoleFreeSpotForFlight(employee, flightId)

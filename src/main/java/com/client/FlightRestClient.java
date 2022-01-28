@@ -45,9 +45,14 @@ public class FlightRestClient {
         return flight;
     }
 
-    public static void callCreateFlightApi(Flight flight){
+    public static boolean callCreateFlightApi(Flight flight){
         ResponseEntity<Flight> flightResponse = restTemplate.postForEntity(CREATE_FLIGHT_API, flight, Flight.class);
-        System.out.println("Dodano nowy lot" + flightResponse.getBody());
+         if(flightResponse.getBody() == null){
+             return false;
+         }
+
+         System.out.println("Dodano nowy lot" + flightResponse.getBody());
+         return true;
     }
 
     public static void callUpdateFlightApi(Flight flight){

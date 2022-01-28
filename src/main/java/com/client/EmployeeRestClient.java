@@ -30,9 +30,8 @@ public class EmployeeRestClient {
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        // List<Employee> employeeList = restTemplate.getForObject(GET_ALL_PERSONAL_DATA_API, List.class);
-        // ResponseEntity<Employee> result = restTemplate.exchange(GET_ALL_PERSONAL_DATA_API, HttpMethod.GET, entity, Employee.class);
-        ResponseEntity<List<Employee>> result = restTemplate.exchange(GET_ALL_EMPLOYEE_API, HttpMethod.GET, entity,  new ParameterizedTypeReference<List<Employee>>() {});
+        ResponseEntity<List<Employee>> result = restTemplate.exchange(GET_ALL_EMPLOYEE_API, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<List<Employee>>() {});
         System.out.println(result.getBody());
         return result.getBody();
     }
@@ -55,7 +54,8 @@ public class EmployeeRestClient {
 
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-        ResponseEntity<List<Employee>> result = restTemplate.exchange(GET_EMPLOYEE_WITH_ROLE_API, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Employee>>() {}, param);
+        ResponseEntity<List<Employee>> result = restTemplate.exchange(GET_EMPLOYEE_WITH_ROLE_API, HttpMethod.GET,
+                entity, new ParameterizedTypeReference<List<Employee>>() {}, param);
         System.out.println(result.getBody());
         return result.getBody();
     }
@@ -77,7 +77,6 @@ public class EmployeeRestClient {
 
         System.out.println(employee.toString());
         System.out.println(flightId);
-        //restTemplate.put(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, param);
 
         ResponseEntity<Employee> employeeResponse = restTemplate.postForEntity(ADD_EMPLOYEE_TO_FLIGHT_CREW_API, employee, Employee.class, param);
         if(employeeResponse.getBody() == null){

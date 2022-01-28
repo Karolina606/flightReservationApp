@@ -64,12 +64,18 @@ public class PersonalDataController {
     @PutMapping("/{pesel}")
     public PersonalData updatePersonalData(@RequestBody PersonalData personalData,
                                            @PathVariable ("pesel") long pesel){
-        PersonalData foundPersonalData = personalDataRepo.findById(pesel).orElseThrow(() -> new NotFoundException("Personal data not found, pesel=" + pesel));
+        PersonalData foundPersonalData = personalDataRepo.findById(pesel).orElseThrow(() ->
+                new NotFoundException("Personal data not found, pesel=" + pesel));
         foundPersonalData.setFirstName(personalData.getFirstName());
         foundPersonalData.setLastName(personalData.getLastName());
         foundPersonalData.setAddress(personalData.getAddress());
         foundPersonalData.setDateOfBirth(personalData.getDateOfBirth());
         foundPersonalData.setPhoneNumber(personalData.getPhoneNumber());
+
+        // Sprawdzanie danych personalnych
+        if(!validatePersonalData(foundPersonalData)){
+            return null;
+        }
 
         return personalDataRepo.save(foundPersonalData);
     }
@@ -77,7 +83,8 @@ public class PersonalDataController {
     // delete personal data
     @DeleteMapping("/{pesel}")
     public ResponseEntity<PersonalData> deletePersonalData(@PathVariable ("pesel") long pesel){
-        PersonalData foundPersonalData = personalDataRepo.findById(pesel).orElseThrow(() -> new NotFoundException("Personal data not found, pesel=" + pesel));
+        PersonalData foundPersonalData = personalDataRepo.findById(pesel).orElseThrow(() ->
+                new NotFoundException("Personal data not found, pesel=" + pesel));
         personalDataRepo.delete(foundPersonalData);
 
         return ResponseEntity.ok().build();
@@ -86,9 +93,11 @@ public class PersonalDataController {
 
     public static boolean validatePersonalData(PersonalData personalData){
         // Sprawdzenie danych
-        if(personalData.getFirstName().isEmpty() || personalData.getFirstName().matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
+        if(personalData.getFirstName().isEmpty() || personalData.getFirstName()
+                .matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
             return false;
-        }else if (personalData.getLastName().isEmpty() || personalData.getLastName().matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
+        }else if (personalData.getLastName().isEmpty() || personalData.getLastName()
+                .matches("^(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*\\_\\-\\=\\+]).*")){
             return false;
         }else if(personalData.getPesel().toString().length() != 11){
             return false;

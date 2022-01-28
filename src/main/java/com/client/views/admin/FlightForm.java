@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightForm extends FormLayout {
-    TextField flightId = new TextField("Id lotu (do usuwania)");
 
     DateTimePicker departureDate = new DateTimePicker("Data odlotu");
     DateTimePicker arrivalDate = new DateTimePicker("Data przylotu");
@@ -31,8 +30,6 @@ public class FlightForm extends FormLayout {
 
 
     Button save = new Button("Zapisz");
-    Button delete = new Button("Usuń");
-    Button cancle = new Button("Odrzuć");
     Notification notification;
 
     FlightView flightViewParent;
@@ -55,25 +52,14 @@ public class FlightForm extends FormLayout {
 
     private Component createButtonLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        cancle.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickShortcut(Key.ENTER);
-        cancle.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> addFlight());
-        delete.addClickListener(event -> deleteFlight());
         return new HorizontalLayout(save);
     }
 
-    private void deleteFlight() {
-        Long FlightId = Long.parseLong(flightId.getValue());
-        FlightRestClient.callDeleteFlightApi(FlightId);
-        flightViewParent.updateList();
-    }
-
     private void addFlight() {
-
         try{
             BigDecimal newPrice = BigDecimal.valueOf(Float.parseFloat(price.getValue()));
 
@@ -86,16 +72,18 @@ public class FlightForm extends FormLayout {
             Airport newArrivalAirport = arrivalAirport.getValue();
 
             Flight flight = new Flight(newDepartureAirport, newArrivalAirport, newDepartureDate, newArrivalDate, newPlane, newPrice);
-            FlightRestClient.callCreateFlightApi(flight);
-
-            notification = Notification.show("Udało się dodać lot.");
-            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            if (FlightRestClient.callCreateFlightApi(flight)){
+                notification = Notification.show("Udało się dodać lot.");
+                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            }else{
+                notification = Notification.show("Nie udało się dodać lot.");
+                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
 
         }catch(Exception e){
             notification = Notification.show("Nie udało się dodać lotu, sprawdź poprawność danych.");
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-
 
         flightViewParent.updateList();
     }

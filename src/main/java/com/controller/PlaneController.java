@@ -21,7 +21,6 @@ public class PlaneController {
         this.planeRepo = planeRepo;
     }
 
-
     // get all plane
     @GetMapping
     public List<Plane> getAllPlanes() {

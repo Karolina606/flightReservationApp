@@ -13,9 +13,9 @@ import java.util.List;
 
 @Entity
 public class Plane {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @ManyToOne
